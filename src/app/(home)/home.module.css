@@ -1,0 +1,24 @@
+/* Landing-page type system (scoped). Arabic falls back to the shared Arabic stack. */
+.landing {
+  font-family: var(--font-body), var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.landing h1,
+.landing h2,
+.landing h3 {
+  font-family: var(--font-display), var(--font-sans);
+}
+
+:global(html[lang="ar"]) .landing,
+:global(html[lang="ar"]) .landing h1,
+:global(html[lang="ar"]) .landing h2,
+:global(html[lang="ar"]) .landing h3 {
+  font-family: var(--font-arabic);
+  letter-spacing: normal;
+}
+
+.landing main:focus {
+  outline: none;
+}

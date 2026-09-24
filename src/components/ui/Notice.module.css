@@ -1,0 +1,74 @@
+.notice {
+  display: flex;
+  gap: 12px;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  border-inline-start-width: 4px;
+  background: var(--color-surface);
+  text-align: start;
+}
+
+.icon {
+  flex: none;
+  margin-top: 2px;
+}
+
+.body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  font-weight: var(--weight-semibold);
+}
+
+.text {
+  color: var(--color-text);
+}
+
+.info {
+  border-inline-start-color: var(--color-accent);
+}
+.info .icon {
+  color: var(--color-accent);
+}
+
+.success {
+  border-inline-start-color: var(--color-success);
+  background: var(--color-success-soft);
+}
+.success .icon {
+  color: var(--color-success);
+}
+
+.warning {
+  border-inline-start-color: var(--color-warning);
+  background: var(--color-warning-soft);
+}
+.warning .icon {
+  color: var(--color-warning);
+}
+
+.error {
+  border-inline-start-color: var(--color-error);
+  background: var(--color-error-soft);
+}
+.error .icon {
+  color: var(--color-error);
+}
+
+.simulated {
+  border-style: dashed;
+  border-inline-start-style: solid;
+  border-inline-start-color: var(--color-accent);
+}
+.simulated .icon {
+  color: var(--color-accent);
+}
+
+/* Tinted backgrounds need the darker link colour to keep AA contrast. */
+.notice a {
+  color: var(--color-primary-hover);
+}

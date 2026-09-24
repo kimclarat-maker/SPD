@@ -1,0 +1,66 @@
+.pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: #ebf0ef;
+  direction: ltr;
+}
+
+.stretch {
+  display: flex;
+  width: 100%;
+}
+
+.pill {
+  min-width: 40px;
+  min-height: 28px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.pill:hover {
+  background: rgba(20, 43, 59, 0.08);
+}
+
+.pill[aria-pressed="true"] {
+  background: var(--color-navy);
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.onDark {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.onDark .pill {
+  color: var(--color-on-navy);
+}
+
+.onDark .pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.onDark .pill[aria-pressed="true"] {
+  background: #fff;
+  color: var(--color-navy);
+}
+
+.onDark .pill:focus-visible {
+  outline-color: #fff;
+}
+
+@media (forced-colors: active) {
+  .pill[aria-pressed="true"] {
+    outline: 2px solid ButtonText;
+  }
+}

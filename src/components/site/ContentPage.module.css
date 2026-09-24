@@ -1,0 +1,54 @@
+.page {
+  padding-block: var(--space-8) var(--space-4);
+}
+
+.header,
+.body {
+  max-width: 760px;
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-size: clamp(1.75rem, 4vw, var(--text-2xl));
+  font-weight: var(--weight-bold);
+}
+
+.intro {
+  font-size: var(--text-md);
+  color: var(--color-text-muted);
+}
+
+.body {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-size: var(--text-lg);
+}
+
+.section p {
+  color: var(--color-text);
+}
+
+.list {
+  margin: 0;
+  padding-inline-start: var(--space-3);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.placeholderText {
+  color: var(--color-text-muted);
+  font-style: italic;
+}

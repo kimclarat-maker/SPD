@@ -1,0 +1,20 @@
+.wrap {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--gutter);
+  text-align: center;
+}
+
+.code {
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+}
+
+.body {
+  color: var(--color-text-muted);
+  max-width: 40ch;
+}

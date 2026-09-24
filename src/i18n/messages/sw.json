@@ -1,0 +1,674 @@
+{
+  "_unreviewed": [
+    "pages.privacy",
+    "pages.accessibility"
+  ],
+  "common": {
+    "systemName": "Mfumo wa Uratibu wa Ushirikiano na Ufuatiliaji wa Huduma kwa Wakimbizi",
+    "shortName": "RPCMS",
+    "homeLink": "Ukurasa wa mwanzo wa RPCMS",
+    "skipToContent": "Ruka hadi maudhui makuu",
+    "language": "Lugha",
+    "languageChanged": "Lugha imebadilishwa kuwa {language}.",
+    "planned": "Imepangwa",
+    "available": "Inapatikana sasa",
+    "simulated": "Majaribio",
+    "simulatedLong": "Ni majaribio katika mfano huu — hakuna mfumo wa nje uliowasiliana.",
+    "illustrative": "Mfano wa kielelezo",
+    "fictional": "Data za kubuni",
+    "placeholder": "Maandishi ya muda",
+    "loading": "Inapakia…",
+    "backToHome": "Rudi ukurasa wa mwanzo",
+    "opensSection": "Nenda kwenye sehemu",
+    "requiredMarker": "(inahitajika)",
+    "optional": "(si lazima)",
+    "close": "Funga",
+    "cancel": "Ghairi",
+    "confirm": "Thibitisha",
+    "save": "Hifadhi",
+    "search": "Tafuta",
+    "filter": "Chuja",
+    "all": "Zote",
+    "none": "Hakuna",
+    "yes": "Ndiyo",
+    "no": "Hapana",
+    "view": "Tazama",
+    "open": "Fungua",
+    "notFoundTitle": "Ukurasa haukupatikana",
+    "notFoundBody": "Ukurasa ulioomba haupo au umehamishwa.",
+    "errorSummary": "Kuna tatizo"
+  },
+  "header": {
+    "mainNav": "Urambazaji mkuu",
+    "howItWorks": "Jinsi unavyofanya kazi",
+    "capabilities": "Uwezo",
+    "whoItServes": "Unaowahudumia",
+    "help": "Msaada",
+    "signIn": "Ingia",
+    "openMenu": "Fungua menyu",
+    "closeMenu": "Funga menyu",
+    "menu": "Menyu"
+  },
+  "footer": {
+    "label": "Sehemu ya chini ya tovuti",
+    "summary": "Jukwaa la uratibu na ufuatiliaji wa huduma kwa wakimbizi nchini Uganda, lililoandaliwa kwa ajili ya Ofisi ya Waziri Mkuu, Idara ya Wakimbizi.",
+    "linksHeading": "Taarifa",
+    "about": "Kuhusu",
+    "privacy": "Faragha",
+    "accessibility": "Ufikivu",
+    "help": "Msaada",
+    "signIn": "Ingia",
+    "prototypeNote": "Toleo la mfano. Maudhui na takwimu kwenye tovuti hii ni za kubuni."
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Kuratibu huduma kwa wakimbizi nchini Uganda",
+      "title": "Mtazamo ulio wazi zaidi wa huduma na afua kwa wakimbizi.",
+      "body": "RPCMS inaunganisha uratibu wa washirika, ripoti za uwandani, ufuatiliaji wa misaada, maombi ya huduma na ufuatiliaji katika jukwaa moja, ili waratibu waone kilichopangwa, kilichotekelezwa, na mahali panapohitaji kushughulikiwa.",
+      "primary": "Kuingia kwa watumishi",
+      "secondary": "Angalia jinsi unavyofanya kazi",
+      "pauseVideo": "Sitisha video ya mandharinyuma",
+      "playVideo": "Cheza video ya mandharinyuma"
+    },
+    "preview": {
+      "label": "Mfano wa kielelezo wa dashibodi ya mratibu, ukitumia takwimu za jumla za kubuni",
+      "mapTitle": "Huduma kwa kila eneo",
+      "mapNote": "Mchoro, si kwa kipimo halisi",
+      "regionA": "Eneo A",
+      "regionB": "Eneo B",
+      "regionC": "Eneo C",
+      "regionD": "Eneo D",
+      "indicator1": "Afua zinazoendelea",
+      "indicator2": "Ripoti za uwandani zilizokaguliwa",
+      "indicator3": "Maombi ya huduma yaliyo wazi",
+      "queueTitle": "Kazi zinazosubiri",
+      "queue1": "Uhakiki wa mshirika",
+      "queue2": "Afua ya kuidhinishwa",
+      "queue3": "Ripoti ya uwandani ya kukagua",
+      "due": "Mwisho {when}",
+      "today": "leo",
+      "tomorrow": "kesho"
+    },
+    "process": {
+      "eyebrow": "Jinsi unavyofanya kazi",
+      "title": "Mtiririko mmoja uliounganishwa, kuanzia kuidhinisha washirika hadi kushiriki ripoti",
+      "intro": "Kila hatua inategemea iliyotangulia. Taarifa hukaguliwa mara moja kisha huendelezwa, ili dashibodi zionyeshe taarifa zilizokaguliwa badala ya mawasilisho ghafi.",
+      "handoff": "Hupeleka",
+      "steps": {
+        "1": {
+          "title": "Kuhakiki na kuidhinisha washirika",
+          "body": "Waratibu hukagua nyaraka za usajili na makubaliano kabla mshirika hajaanza kufanya kazi kwenye mfumo.",
+          "next": "Ni mshirika aliyeidhinishwa pekee anayeweza kuwasilisha afua."
+        },
+        "2": {
+          "title": "Kupanga na kuidhinisha afua",
+          "body": "Washirika hueleza watakachotekeleza, wapi, kwa ajili ya nani, na kwa ufadhili gani. Waratibu huidhinisha, hurudisha au hukataa kila mpango.",
+          "next": "Ni afua zilizoidhinishwa pekee zinazoweza kupokea ripoti za uwandani."
+        },
+        "3": {
+          "title": "Kurekodi shughuli za uwandani",
+          "body": "Timu za uwandani hurekodi shughuli na tafiti kwenye fomu za simu, pamoja na mawasilisho yasiyo na mtandao yanayotumwa mtandao unaporudi.",
+          "next": "Ripoti zilizowasilishwa husubiri kukaguliwa dhidi ya mpango ulioidhinishwa."
+        },
+        "4": {
+          "title": "Kuhakiki wanufaika na historia ya misaada",
+          "body": "Misaada iliyoripotiwa hulinganishwa na historia ya misaada ili kubaini uwezekano wa kurudiwa au mapengo, na mratibu hufanya uamuzi.",
+          "next": "Ukaguzi uliokamilika huthibitisha takwimu zinazotumika katika ufuatiliaji."
+        },
+        "5": {
+          "title": "Kupokea na kushughulikia maombi ya huduma ya wakimbizi",
+          "body": "Maombi husajiliwa, hupewa mshirika aliyeidhinishwa, hufuatiliwa kwa muda wa kujibu, na hufungwa matokeo yakiwa yamerekodiwa.",
+          "next": "Matokeo ya kesi huongeza picha ya upatikanaji wa huduma."
+        },
+        "6": {
+          "title": "Kufuatilia upatikanaji wa huduma, matokeo na ufadhili",
+          "body": "Dashibodi huunganisha ripoti zilizokaguliwa, ukaguzi uliokamilika na matokeo ya kesi ili kuonyesha huduma, mapengo na ufadhili kwa eneo na sekta.",
+          "next": "Matokeo ya ufuatiliaji hukusanywa katika ripoti za kipindi."
+        },
+        "7": {
+          "title": "Kushiriki ripoti zilizoidhinishwa na kuhifadhi kumbukumbu za ukaguzi",
+          "body": "Ripoti huidhinishwa na kushirikiwa na washirika walioruhusiwa. Kila uamuzi hurekodiwa pamoja na aliyeufanya na lini.",
+          "next": "Kumbukumbu za ukaguzi huunganisha kila takwimu na maamuzi yake."
+        }
+      }
+    },
+    "capabilities": {
+      "eyebrow": "Uwezo",
+      "title": "Waratibu wanachoweza kufanya katika RPCMS",
+      "items": {
+        "partners": {
+          "title": "Uratibu wa washirika",
+          "body": "Kagua usajili wa washirika, nyaraka na makubaliano, kisha idhinisha au simamisha ufikiaji. Uidhinishaji wa nyaraka na sahihi za kielektroniki hufuatiliwa kwenye rekodi ya kila mshirika."
+        },
+        "gis": {
+          "title": "Ufuatiliaji wa afua na GIS",
+          "body": "Idhinisha mipango ya afua na uone shughuli zinapofanyika kwenye ramani za kiwango cha eneo, bila kuonyesha mahali pa mtu binafsi."
+        },
+        "forms": {
+          "title": "Fomu na tafiti za uwandani",
+          "body": "Kusanya ripoti za shughuli na tafiti kwa vifaa vya simu, hata bila mtandao, na kagua kila wasilisho kabla halijahesabiwa."
+        },
+        "assistance": {
+          "title": "Ufuatiliaji wa misaada",
+          "body": "Linganisha misaada iliyoripotiwa na historia ili kubaini uwezekano wa kurudiwa au mapengo, na rekodi uamuzi kwa kila kesi iliyoonyeshwa."
+        },
+        "services": {
+          "title": "Huduma kwa wakimbizi",
+          "body": "Sajili maombi ya huduma, yakabidhi kwa washirika walioidhinishwa, na yafuatilie hadi yatatuliwe. Waombaji na washirika hupokea arifa katika kila hatua."
+        },
+        "reporting": {
+          "title": "Ripoti na uchambuzi",
+          "body": "Kusanya taarifa zilizokaguliwa katika ripoti za kitaifa, ziidhinishe na uzishiriki na washirika walioruhusiwa. Ufuatiliaji wa miunganisho huonyesha kama ubadilishanaji wa data uko sawa."
+        }
+      }
+    },
+    "audiences": {
+      "eyebrow": "Unaowahudumia",
+      "title": "Umeundwa kwa ajili ya kila mhusika katika huduma",
+      "intro": "Kile ambacho kila mtu anaweza kuona na kufanya kinategemea jukumu lake. Ufikiaji hutolewa na wasimamizi walioidhinishwa, si kwa kujisajili.",
+      "firstRelease": "Katika toleo hili la kwanza, ni lango la waratibu wa OPM pekee linalopatikana. Malango mengine yamepangwa na yatatangazwa yatakapokuwa tayari.",
+      "opm": {
+        "title": "OPM na waratibu wa serikali walioidhinishwa",
+        "body": "Kuidhinisha washirika na afua, kukagua taarifa za uwandani, kutatua ukaguzi wa misaada, kushughulikia kesi za huduma na kuidhinisha ripoti za kitaifa."
+      },
+      "partners": {
+        "title": "Washirika wa kibinadamu na wa maendeleo",
+        "body": "Watawasilisha mipango ya afua na ripoti, watashughulikia kesi za huduma walizopewa, na watapokea ripoti zinazoshirikiwa."
+      },
+      "field": {
+        "title": "Timu za makazi na za uwandani",
+        "body": "Zitarekodi shughuli na tafiti kwenye fomu za simu, hata pale mtandao ulipo dhaifu."
+      },
+      "refugees": {
+        "title": "Wakimbizi wanaotafuta taarifa au huduma",
+        "body": "Wataweza kupata taarifa na kufuatilia maombi ya huduma kupitia njia zilizoundwa kwa ajili yao."
+      },
+      "signInOpm": "Kuingia kwa mratibu"
+    },
+    "privacy": {
+      "eyebrow": "Faragha na matumizi yenye uwajibikaji",
+      "title": "Taarifa binafsi hubaki kwa watumiaji walioidhinishwa",
+      "body1": "Taarifa binafsi za wakimbizi katika RPCMS zinapatikana kwa watumiaji walioidhinishwa ambao jukumu lao linazihitaji pekee, na kila ufikiaji hurekodiwa.",
+      "body2": "Kurasa za umma, ikiwemo huu, hazionyeshi data za kesi wala za wanufaika. Takwimu zozote kwenye kurasa za umma ni za jumla na, katika mfano huu, ni za kubuni.",
+      "body3": "Data hukusanywa kwa madhumuni ya uratibu na utoaji wa huduma pekee.",
+      "link": "Soma taarifa ya faragha"
+    },
+    "faq": {
+      "eyebrow": "Msaada",
+      "title": "Maswali yanayoulizwa mara kwa mara",
+      "q1": "Nani anaweza kutumia RPCMS?",
+      "a1": "Katika toleo hili la kwanza, ni waratibu wa OPM walioidhinishwa pekee wanaoweza kuingia. Akaunti hufunguliwa na wasimamizi wa mfumo; hakuna usajili wa umma.",
+      "q2": "Je, umma unaweza kuona rekodi za wakimbizi?",
+      "a2": "Hapana. Rekodi za wakimbizi na wanufaika haziwahi kuonyeshwa kwenye kurasa za umma. Zinapatikana kwa watumiaji walioidhinishwa ambao jukumu lao linazihitaji pekee.",
+      "q3": "Je, ninaweza kuwasilisha ombi la huduma kwa mkimbizi hapa?",
+      "a3": "Bado. Njia za kuwasilisha maombi ya huduma zimepangwa lakini hazipatikani katika toleo hili. Tafadhali endelea kutumia madawati ya msaada na vituo vya huduma vilivyopo katika makazi yako.",
+      "q4": "Je, nikihitaji ufikiaji kama mshirika?",
+      "a4": "Lango la washirika limepangwa. Hadi litakapofunguliwa, mashirika washirika yawasiliane na Idara ya Wakimbizi kupitia njia zao za kawaida za uratibu.",
+      "contactTitle": "Mawasiliano ya taasisi",
+      "contactBody": "Anwani rasmi za mawasiliano zitachapishwa hapa kabla ya uzinduzi.",
+      "contactPlaceholder": "Maandishi ya muda — yatabadilishwa na anwani za taasisi zilizothibitishwa kabla ya uzinduzi."
+    }
+  },
+  "pages": {
+    "about": {
+      "title": "Kuhusu RPCMS",
+      "intro": "Mfumo wa Uratibu wa Ushirikiano na Ufuatiliaji wa Huduma kwa Wakimbizi (RPCMS) unaandaliwa kusaidia kuratibu huduma kwa wakimbizi nchini Uganda. Ofisi ya Waziri Mkuu, Idara ya Wakimbizi, ndiyo taasisi inayonufaika.",
+      "purposeTitle": "Madhumuni",
+      "purposeBody": "RPCMS inaunganisha uratibu wa washirika, upangaji wa afua, ripoti za uwandani, ufuatiliaji wa misaada, maombi ya huduma na ufuatiliaji, ili maamuzi yatokane na taarifa zilizokaguliwa na yarekodiwe.",
+      "statusTitle": "Hali ya toleo hili",
+      "statusBody": "Huu ni mfano wa sehemu ya mbele pekee. Unatumia rekodi za kubuni, na hakuna mfumo wa nje uliounganishwa. Uhakiki, arifa, sahihi za kielektroniki na ubadilishanaji wa data ni majaribio na yameandikwa hivyo.",
+      "noEndorsement": "Mfano huu hauonyeshi nembo rasmi na haupaswi kuchukuliwa kama tangazo rasmi."
+    }
+  },
+  "auth": {
+    "backToSite": "Rudi ukurasa wa mwanzo wa RPCMS",
+    "authorisedOnly": "Ufikiaji ni kwa watumiaji walioidhinishwa pekee. Shughuli zote hurekodiwa.",
+    "signIn": {
+      "title": "Kuingia kwa watumishi",
+      "intro": "Ingia kwa akaunti uliyopewa.",
+      "username": "Barua pepe au jina la mtumiaji ulilopewa",
+      "password": "Nenosiri",
+      "showPassword": "Onyesha nenosiri",
+      "hidePassword": "Ficha nenosiri",
+      "passwordShown": "Nenosiri linaonekana",
+      "passwordHidden": "Nenosiri limefichwa",
+      "forgot": "Umesahau nenosiri?",
+      "submit": "Ingia",
+      "submitting": "Inaingia…",
+      "errorUsernameRequired": "Weka barua pepe au jina la mtumiaji ulilopewa.",
+      "errorPasswordRequired": "Weka nenosiri lako.",
+      "errorInvalid": "Taarifa za kuingia si sahihi. Zikague kisha ujaribu tena.",
+      "errorDemoDisabled": "Kuingia hakupatikani katika toleo hili.",
+      "mfaNote": "Uhakiki wa hatua nyingi utahitajika RPCMS itakapozinduliwa. Haujawashwa katika mfano huu.",
+      "demoTitle": "Mazingira ya maonyesho",
+      "demoBody": "Huu ni mfano wa kuingia, si uthibitishaji wa mfumo halisi. Unatumia akaunti ya kubuni na huhifadhi kipindi cha maonyesho katika kivinjari hiki pekee.",
+      "demoUsername": "Jina la mtumiaji",
+      "demoPassword": "Nenosiri",
+      "demoFill": "Jaza taarifa za maonyesho"
+    },
+    "forgot": {
+      "title": "Weka upya nenosiri lako",
+      "intro": "Weka barua pepe au jina la mtumiaji la akaunti yako. Ikiwa inalingana na akaunti, maelekezo yatatumwa kwa anwani iliyosajiliwa.",
+      "username": "Barua pepe au jina la mtumiaji ulilopewa",
+      "submit": "Omba maelekezo ya kuweka upya",
+      "submitting": "Inatuma ombi…",
+      "errorRequired": "Weka barua pepe au jina la mtumiaji ulilopewa.",
+      "backToSignIn": "Rudi kwenye kuingia"
+    },
+    "requested": {
+      "title": "Ombi limepokelewa",
+      "body": "Ikiwa taarifa zinalingana na akaunti, maelekezo ya kuweka upya nenosiri yangetumwa kwa anwani iliyosajiliwa. Kwa usalama, hatuthibitishi kama akaunti ipo.",
+      "simulatedNote": "Mfano: hakuna barua pepe iliyotumwa. Urejeshaji wa nenosiri ni majaribio na hakuna ujumbe uliowasilishwa.",
+      "previewExpired": "Angalia skrini ya kiungo kilichoisha muda",
+      "backToSignIn": "Rudi kwenye kuingia"
+    },
+    "expired": {
+      "title": "Kiungo hiki cha kuweka upya kimeisha muda",
+      "body": "Viungo vya kuweka upya nenosiri hutumika mara moja na huisha muda baada ya muda mfupi. Omba kiungo kipya ili kuendelea.",
+      "requestNew": "Omba kiungo kipya",
+      "backToSignIn": "Rudi kwenye kuingia"
+    }
+  },
+  "portal": {
+    "roleName": "Mratibu wa Kitaifa wa OPM",
+    "portalName": "Lango la mratibu",
+    "demoBanner": "Kipindi cha maonyesho chenye rekodi za kubuni. Mabadiliko huhifadhiwa katika kivinjari hiki pekee.",
+    "noMfa": "Uhakiki wa hatua nyingi haujawashwa (mfano)",
+    "signOut": "Toka",
+    "signedInAs": "Umeingia kama {name}",
+    "resetDemo": "Weka upya data za maonyesho",
+    "resetConfirm": "Weka upya rekodi zote za maonyesho? Mabadiliko yako katika kivinjari hiki yatapotea.",
+    "resetDone": "Data za maonyesho zimewekwa upya.",
+    "checkingSession": "Inakagua kipindi cha maonyesho…",
+    "sidebarLabel": "Urambazaji wa lango",
+    "openNav": "Fungua urambazaji wa lango",
+    "closeNav": "Funga urambazaji wa lango",
+    "nav": {
+      "dashboard": "Dashibodi",
+      "partners": "Washirika",
+      "interventions": "Afua",
+      "fieldReports": "Ripoti za uwandani",
+      "exceptions": "Hitilafu za misaada",
+      "cases": "Kesi za huduma",
+      "reports": "Ripoti za kitaifa",
+      "integrations": "Miunganisho",
+      "audit": "Kumbukumbu za ukaguzi",
+      "groupWork": "Uratibu",
+      "groupOversight": "Usimamizi",
+      "analytics": "Uchambuzi"
+    },
+    "table": {
+      "empty": "Hakuna rekodi zinazolingana na vichujio hivi.",
+      "results": "Rekodi {count}",
+      "searchPlaceholder": "Tafuta kwa jina au kumbukumbu",
+      "statusFilter": "Hali",
+      "clearFilters": "Futa vichujio",
+      "reference": "Kumbukumbu",
+      "name": "Jina",
+      "status": "Hali",
+      "updated": "Ilisasishwa mwisho",
+      "actions": "Vitendo"
+    },
+    "detail": {
+      "back": "Rudi kwenye orodha",
+      "timeline": "Kumbukumbu za ukaguzi",
+      "timelineEmpty": "Bado hakuna shughuli iliyorekodiwa.",
+      "decision": "Uamuzi",
+      "note": "Maelezo ya uamuzi",
+      "noteHint": "Eleza sababu. Maelezo haya hurekodiwa katika kumbukumbu za ukaguzi.",
+      "noteRequired": "Ongeza maelezo ya uamuzi huu.",
+      "decisionRecorded": "Uamuzi umerekodiwa.",
+      "overview": "Muhtasari",
+      "related": "Rekodi zinazohusiana",
+      "restricted": "Imezuiliwa",
+      "restrictedNote": "Taarifa binafsi zimefichwa. Ni washughulikiaji wa kesi walioidhinishwa pekee wanaoweza kuziona.",
+      "notFound": "Rekodi hii haikupatikana.",
+      "progress": "Asilimia {percent} ya mtiririko",
+      "confirmAction": "Thibitisha: {action}",
+      "actions": "Vitendo",
+      "jumpTo": "Nenda kwenye sehemu",
+      "sections": "Sehemu za rekodi"
+    },
+    "dashboard": {
+      "title": "Muhtasari wa kitaifa",
+      "intro": "Taarifa zilizokaguliwa kuhusu washirika, afua, shughuli za uwandani, misaada na huduma.",
+      "alertsTitle": "Yanayohitaji kushughulikiwa",
+      "alertsEmpty": "Hakuna tahadhari zilizo wazi. Kila kitu kiko sawa.",
+      "alertsCount": "Tahadhari {count} zilizo wazi",
+      "kpiPartners": "Washirika walioidhinishwa",
+      "kpiInterventions": "Afua zilizoidhinishwa",
+      "kpiReports": "Ripoti za uwandani zilizokaguliwa",
+      "kpiExceptions": "Hitilafu za misaada zilizo wazi",
+      "kpiCases": "Kesi za huduma zilizo wazi",
+      "kpiReach": "Watu waliofikiwa (ripoti zilizokaguliwa)",
+      "journeyTitle": "Mtiririko wa uratibu",
+      "journeyIntro": "Maendeleo ya mzunguko wa sasa, kuanzia kuidhinisha mshirika hadi ripoti ya kitaifa.",
+      "journeyDone": "Imekamilika",
+      "journeyPending": "Inasubiri",
+      "mapTitle": "Huduma kwa kila makazi",
+      "mapIntro": "Idadi ya jumla ya afua zilizoidhinishwa kwa kila makazi. Hakuna mahali pa mtu binafsi panapoonyeshwa.",
+      "mapNote": "Ramani ya mchoro, si kwa kipimo halisi",
+      "mapSector": "Sekta",
+      "mapAllSectors": "Sekta zote",
+      "mapCount": "Afua {count} zilizoidhinishwa",
+      "mapTable": "Jedwali la huduma kwa kila makazi",
+      "mapSettlement": "Makazi",
+      "mapRegion": "Eneo",
+      "mapInterventions": "Afua zilizoidhinishwa",
+      "activityTitle": "Shughuli za hivi karibuni",
+      "viewAudit": "Tazama kumbukumbu zote za ukaguzi",
+      "journeySteps": {
+        "partner": "Mshirika ameidhinishwa",
+        "intervention": "Afua imeidhinishwa",
+        "fieldReport": "Ripoti ya uwandani imekaguliwa",
+        "exception": "Uamuzi wa hitilafu ya misaada umefanywa",
+        "case": "Kesi ya huduma imetatuliwa",
+        "report": "Ripoti ya kitaifa imesainiwa na kushirikiwa"
+      }
+    },
+    "alerts": {
+      "partnerPending": "Uhakiki wa mshirika unasubiri: {name}",
+      "interventionSubmitted": "Afua inasubiri kuidhinishwa: {name}",
+      "interventionBlocked": "Afua imesimamishwa hadi mshirika wake aidhinishwe: {name}",
+      "fieldReportSubmitted": "Ripoti ya uwandani inasubiri kukaguliwa: {name}",
+      "exceptionOpen": "Hitilafu ya misaada inasubiri uamuzi: {name}",
+      "exceptionEscalated": "Hitilafu ya misaada iliyopandishwa: {name}",
+      "caseUnassigned": "Kesi ya huduma bado haijakabidhiwa: {name}",
+      "caseOverdue": "Kesi ya huduma imepita tarehe ya kujibu: {name}",
+      "reportReady": "Ripoti ya kitaifa iko tayari kuidhinishwa: {name}",
+      "reportBlocked": "Ripoti ya kitaifa ina ukaguzi ambao haujakamilika: {name}",
+      "reportSigned": "Ripoti ya kitaifa imesainiwa, bado haijashirikiwa: {name}",
+      "integrationDelayed": "Ubadilishanaji wa data umechelewa: {name}",
+      "priorityHigh": "Kipaumbele cha juu",
+      "priorityMedium": "Kipaumbele cha kati",
+      "priorityLow": "Kipaumbele cha chini"
+    },
+    "partners": {
+      "title": "Washirika",
+      "intro": "Hakiki mashirika washirika kabla hayajaweza kuwasilisha afua.",
+      "type": "Aina ya shirika",
+      "registration": "Namba ya usajili",
+      "sectors": "Sekta",
+      "settlements": "Maeneo ya kazi",
+      "contactRole": "Jukumu la mtu wa mawasiliano",
+      "submitted": "Ombi lilipokelewa",
+      "documents": "Nyaraka",
+      "docVerified": "Imehakikiwa",
+      "docPending": "Inasubiri kukaguliwa",
+      "docMissing": "Haipo",
+      "docApprove": "Idhinisha nyaraka",
+      "signature": "Makubaliano ya ushirikiano",
+      "signatureRequested": "Sahihi bado haijaombwa",
+      "signatureSigned": "Imesainiwa na {name} tarehe {date} (sahihi ya kielektroniki ya majaribio)",
+      "requestSignature": "Omba sahihi ya kielektroniki (majaribio)",
+      "checks": "Ukaguzi wa uhakiki",
+      "checkDocs": "Nyaraka zote zinazohitajika zimehakikiwa",
+      "checkSignature": "Makubaliano ya ushirikiano yamesainiwa",
+      "checksIncomplete": "Kamilisha ukaguzi wa uhakiki kabla ya kuidhinisha.",
+      "approve": "Idhinisha mshirika",
+      "reject": "Kataa ombi",
+      "suspend": "Simamisha mshirika",
+      "reinstate": "Rejesha mshirika",
+      "interventionsHeading": "Afua za mshirika huyu",
+      "noInterventions": "Bado hakuna afua."
+    },
+    "interventions": {
+      "title": "Afua",
+      "intro": "Idhinisha mipango ya afua kutoka kwa washirika walioidhinishwa.",
+      "partner": "Mshirika",
+      "sector": "Sekta",
+      "settlement": "Makazi",
+      "period": "Kipindi",
+      "budget": "Bajeti",
+      "funding": "Chanzo cha ufadhili",
+      "target": "Walengwa",
+      "objective": "Lengo",
+      "activities": "Shughuli zilizopangwa",
+      "partnerNotApproved": "Mshirika {name} bado hajaidhinishwa. Idhinisha mshirika kabla ya kuamua kuhusu afua hii.",
+      "openPartner": "Fungua rekodi ya mshirika",
+      "approve": "Idhinisha afua",
+      "return": "Rudisha kwa marekebisho",
+      "reject": "Kataa afua",
+      "complete": "Weka alama kuwa imekamilika",
+      "reportsHeading": "Ripoti za uwandani",
+      "noReports": "Bado hakuna ripoti za uwandani."
+    },
+    "fieldReports": {
+      "title": "Ripoti za uwandani",
+      "intro": "Kagua mawasilisho ya uwandani dhidi ya afua zilizoidhinishwa kabla hayajahesabiwa katika ufuatiliaji.",
+      "intervention": "Afua",
+      "submittedBy": "Imewasilishwa na",
+      "channel": "Njia",
+      "channelOffline": "Fomu ya simu, iliwasilishwa bila mtandao kisha ikatumwa",
+      "channelOnline": "Fomu ya simu, mtandaoni",
+      "activityDate": "Tarehe ya shughuli",
+      "reached": "Watu waliofikiwa",
+      "reachedBreakdown": "Mgawanyo",
+      "women": "Wanawake",
+      "men": "Wanaume",
+      "children": "Watoto",
+      "distributed": "Vitu vilivyogawiwa",
+      "narrative": "Maelezo ya uwandani",
+      "heldNotice": "Wasilisho hili limeshikiliwa kwa sababu afua yake bado haijaidhinishwa. Litaweza kukaguliwa afua ikishaidhinishwa.",
+      "openIntervention": "Fungua afua",
+      "accept": "Kubali ripoti",
+      "return": "Rudisha kwa marekebisho",
+      "resubmit": "Iga wasilisho lililorekebishwa",
+      "verificationNote": "Kukubali huanzisha ukaguzi wa historia ya misaada kwa mgao ulioripotiwa (majaribio).",
+      "exceptionsHeading": "Hitilafu za misaada kutoka ripoti hii"
+    },
+    "exceptions": {
+      "title": "Hitilafu za misaada",
+      "intro": "Amua kuhusu rekodi za misaada zilizoonyeshwa na ukaguzi wa uhakiki.",
+      "household": "Kumbukumbu ya kaya",
+      "reason": "Sababu ya kuonyeshwa",
+      "source": "Chanzo",
+      "detected": "Ilionyeshwa tarehe",
+      "history": "Historia ya misaada (jumla)",
+      "historyItem": "Kitu",
+      "historyPartner": "Mshirika",
+      "historyDate": "Tarehe",
+      "verification": "Matokeo ya uhakiki",
+      "verificationSimulated": "Matokeo kutoka huduma ya uhakiki ya majaribio. Hakuna hifadhidata ya usajili iliyoulizwa.",
+      "waitingReport": "Ukaguzi huu unategemea ripoti ya uwandani {name}, ambayo bado haijakubaliwa. Kagua ripoti kwanza.",
+      "openReport": "Fungua ripoti ya uwandani",
+      "clear": "Thibitisha kuwa msaada ni halali",
+      "withhold": "Rekodi kama marudio",
+      "escalate": "Pandisha kwa ukaguzi zaidi",
+      "reasonDuplicate": "Huenda ni marudio: kitu kinachofanana kilipokelewa kutoka kwa mshirika mwingine ndani ya siku 30",
+      "reasonMismatch": "Ukubwa wa kaya unatofautiana na kumbukumbu ya usajili",
+      "reasonMissing": "Kumbukumbu ya usajili haikuweza kuhakikiwa"
+    },
+    "cases": {
+      "title": "Kesi za huduma",
+      "intro": "Kabidhi maombi ya huduma ya wakimbizi kwa washirika walioidhinishwa na uyafuatilie hadi yatatuliwe.",
+      "category": "Aina",
+      "requester": "Kumbukumbu ya mwombaji",
+      "received": "Ilipokelewa",
+      "channel": "Ilipokelewa kupitia",
+      "due": "Jibu linatarajiwa",
+      "priority": "Kipaumbele",
+      "assignedTo": "Mshirika aliyekabidhiwa",
+      "unassigned": "Haijakabidhiwa",
+      "summary": "Muhtasari wa ombi",
+      "assign": "Kabidhi mshirika",
+      "assignLabel": "Mshirika aliyeidhinishwa",
+      "assignHint": "Ni washirika walioidhinishwa pekee wanaoonyeshwa.",
+      "assignChoose": "Chagua mshirika",
+      "assignRequired": "Chagua mshirika wa kukabidhi.",
+      "startWork": "Weka alama kuwa inaendelea",
+      "resolve": "Rekodi utatuzi",
+      "resolutionLabel": "Utatuzi",
+      "close": "Funga kesi",
+      "notify": "Mjulishe mwombaji (majaribio)",
+      "notifySent": "Arifa ya majaribio imewekwa kwenye foleni. Hakuna SMS wala ujumbe uliowasilishwa.",
+      "resolution": "Utatuzi",
+      "overdue": "Imechelewa",
+      "updates": "Taarifa za kesi"
+    },
+    "reports": {
+      "title": "Ripoti za kitaifa",
+      "intro": "Kusanya taarifa zilizokaguliwa, idhinisha, na shiriki na washirika walioruhusiwa.",
+      "period": "Kipindi cha ripoti",
+      "readiness": "Ukaguzi wa utayari",
+      "checkFieldReports": "Ripoti zote za uwandani za kipindi zimekaguliwa ({pending} zimebaki)",
+      "checkExceptions": "Hakuna hitilafu za misaada zilizo wazi ({pending} ziko wazi)",
+      "checkCases": "Kesi za huduma za kipaumbele cha juu zimekabidhiwa ({pending} hazijakabidhiwa)",
+      "figures": "Takwimu za ripoti",
+      "figuresLive": "Takwimu husasishwa kutoka rekodi zilizokaguliwa hadi ripoti isainiwe.",
+      "figuresFrozen": "Takwimu zimefungwa wakati wa kusaini tarehe {date}.",
+      "sections": "Sehemu",
+      "sign": "Saini ripoti (sahihi ya kielektroniki ya majaribio)",
+      "signName": "Andika jina lako kamili ili kusaini",
+      "signNameRequired": "Andika jina lako ili kusaini.",
+      "signBlocked": "Kamilisha ukaguzi wote wa utayari kabla ya kusaini.",
+      "signedBy": "Imesainiwa na {name} tarehe {date} (sahihi ya kielektroniki ya majaribio)",
+      "share": "Shiriki na washirika walioidhinishwa (majaribio)",
+      "sharedWith": "Imeshirikiwa na washirika {count} walioidhinishwa tarehe {date} (ubadilishanaji wa data wa majaribio)",
+      "reopen": "Rudisha kuwa rasimu",
+      "figBudget": "Bajeti ya afua zilizoidhinishwa",
+      "figExceptionsResolved": "Hitilafu za misaada zilizotatuliwa",
+      "figCasesResolved": "Kesi za huduma zilizotatuliwa"
+    },
+    "integrations": {
+      "title": "Miunganisho",
+      "intro": "Fuatilia ubadilishanaji wa data na mifumo ya nje. Katika mfano huu, kila muunganisho ni wa majaribio.",
+      "lastSync": "Usawazishaji wa mwisho uliofanikiwa",
+      "direction": "Mwelekeo",
+      "retry": "Jaribu kusawazisha tena (majaribio)",
+      "retryDone": "Usawazishaji wa majaribio umekamilika.",
+      "outbox": "Sanduku la ujumbe wa majaribio",
+      "outboxIntro": "Ujumbe na ubadilishanaji ambao mfumo halisi ungetuma. Hakuna chochote hapa kilichowasilishwa.",
+      "outboxEmpty": "Bado hakuna ujumbe wa majaribio.",
+      "recipient": "Mpokeaji",
+      "message": "Ujumbe",
+      "kind": "Aina"
+    },
+    "audit": {
+      "title": "Kumbukumbu za ukaguzi",
+      "intro": "Kila uamuzi na mabadiliko, pamoja na aliyeyafanya na lini.",
+      "actor": "Mhusika",
+      "action": "Kitendo",
+      "record": "Rekodi",
+      "time": "Muda",
+      "entityFilter": "Aina ya rekodi",
+      "systemActor": "Mfumo",
+      "simulatedTag": "Majaribio"
+    },
+    "entity": {
+      "partner": "Mshirika",
+      "intervention": "Afua",
+      "fieldReport": "Ripoti ya uwandani",
+      "exception": "Hitilafu ya misaada",
+      "case": "Kesi ya huduma",
+      "report": "Ripoti ya kitaifa",
+      "integration": "Muunganisho"
+    },
+    "status": {
+      "partner": {
+        "pending": "Inasubiri uhakiki",
+        "approved": "Ameidhinishwa",
+        "rejected": "Amekataliwa",
+        "suspended": "Amesimamishwa"
+      },
+      "intervention": {
+        "submitted": "Inasubiri kuidhinishwa",
+        "approved": "Imeidhinishwa",
+        "returned": "Imerudishwa kwa marekebisho",
+        "rejected": "Imekataliwa",
+        "completed": "Imekamilika"
+      },
+      "fieldReport": {
+        "held": "Imeshikiliwa — afua haijaidhinishwa",
+        "submitted": "Inasubiri kukaguliwa",
+        "accepted": "Imekubaliwa",
+        "returned": "Imerudishwa kwa marekebisho"
+      },
+      "exception": {
+        "waiting": "Inasubiri ukaguzi wa ripoti",
+        "open": "Iko wazi",
+        "escalated": "Imepandishwa",
+        "cleared": "Imethibitishwa kuwa halali",
+        "duplicate": "Imerekodiwa kama marudio"
+      },
+      "case": {
+        "new": "Mpya",
+        "assigned": "Imekabidhiwa",
+        "in_progress": "Inaendelea",
+        "resolved": "Imetatuliwa",
+        "closed": "Imefungwa"
+      },
+      "report": {
+        "draft": "Rasimu",
+        "signed": "Imesainiwa",
+        "shared": "Imeshirikiwa"
+      },
+      "integration": {
+        "healthy": "Iko sawa",
+        "delayed": "Imechelewa",
+        "paused": "Imesitishwa"
+      },
+      "priority": {
+        "high": "Juu",
+        "medium": "Kati",
+        "low": "Chini"
+      }
+    },
+    "outboxKinds": {
+      "sms": "Arifa ya SMS",
+      "email": "Arifa ya barua pepe",
+      "signature": "Ombi la sahihi ya kielektroniki",
+      "exchange": "Ubadilishanaji wa data",
+      "verification": "Ombi la uhakiki"
+    },
+    "errors": {
+      "NOT_FOUND": "Rekodi hii haikupatikana.",
+      "INVALID_STATE": "Kitendo hiki hakipatikani tena kwa hali ya sasa ya rekodi. Ukurasa umesasishwa.",
+      "PARTNER_NOT_APPROVED": "Mshirika lazima aidhinishwe kwanza.",
+      "INTERVENTION_NOT_APPROVED": "Afua lazima iidhinishwe kabla ripoti zake za uwandani hazijakaguliwa.",
+      "REPORT_NOT_ACCEPTED": "Ripoti ya uwandani inayohusika lazima ikubaliwe kwanza.",
+      "CHECKS_INCOMPLETE": "Kamilisha ukaguzi unaohitajika kwanza.",
+      "NOTE_REQUIRED": "Ongeza maelezo ya uamuzi huu.",
+      "UNAUTHENTICATED": "Kipindi chako cha maonyesho kimeisha. Ingia tena.",
+      "UNKNOWN": "Hitilafu imetokea. Jaribu tena."
+    },
+    "signedInLabel": "Umeingia kama",
+    "scope": "Ngazi ya kitaifa",
+    "collapse": "Kunja",
+    "expand": "Panua upau wa pembeni",
+    "analytics": {
+      "title": "Uchambuzi",
+      "intro": "Chati za taarifa zilizokaguliwa: ufadhili, waliofikiwa, kesi za huduma na shughuli zilizorekodiwa.",
+      "tileBudget": "Bajeti iliyoidhinishwa",
+      "tileReach": "Watu waliofikiwa",
+      "tileReports": "Ripoti za uwandani zilizokubaliwa",
+      "tileCases": "Kesi za huduma zilizo wazi",
+      "reportsOf": "{accepted} kati ya {total} zilizowasilishwa",
+      "budgetBySector": "Bajeti iliyoidhinishwa kwa sekta",
+      "budgetBySectorSub": "Afua zilizoidhinishwa na zilizokamilika, kwa dola za Marekani.",
+      "reachBySettlement": "Watu waliofikiwa kwa makazi",
+      "reachBySettlementSub": "Kutoka ripoti za uwandani zilizokubaliwa. Elekeza au chagua upau kuona mgawanyo.",
+      "reachByGroup": "Watu waliofikiwa kwa kundi",
+      "reachByGroupSub": "Wanawake, wanaume na watoto katika ripoti zote zilizokubaliwa.",
+      "casesByStatus": "Kesi za huduma kwa hali",
+      "casesByStatusSub": "Kesi zote za huduma katika mzunguko wa sasa.",
+      "reachVsTarget": "Waliofikiwa dhidi ya lengo",
+      "reachVsTargetSub": "Watu waliofikiwa katika ripoti zilizokubaliwa, dhidi ya lengo la kila afua iliyoidhinishwa. Alama ni asilimia 100.",
+      "activity": "Shughuli zilizorekodiwa",
+      "activitySub": "Maamuzi na matukio ya mfumo katika kumbukumbu za ukaguzi kwa siku, siku 30 zilizopita.",
+      "activityAria": "Chati ya nguzo: matukio {total} yaliyorekodiwa katika siku {days} zilizopita. Tumia jedwali la data kwa thamani za kila siku.",
+      "showTable": "Onyesha jedwali la data",
+      "noData": "Bado hakuna data iliyokaguliwa.",
+      "interventionsCount": "Afua",
+      "total": "Jumla",
+      "group": "Kundi",
+      "count": "Idadi",
+      "target": "Lengo",
+      "targetMarker": "lengo ni asilimia 100",
+      "ofTarget": "{reached} kati ya {target} · {percent}",
+      "day": "Siku",
+      "events": "Matukio",
+      "eventsCount": "Matukio {count}"
+    }
+  }
+}

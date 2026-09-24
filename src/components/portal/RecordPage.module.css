@@ -1,0 +1,374 @@
+/* Record detail layout modelled on the reference review workspace. */
+
+.page {
+  display: grid;
+  gap: 24px;
+  max-width: 1360px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  justify-self: start;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--color-text);
+}
+
+/* Header card */
+.headerCard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px 32px;
+  padding: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+}
+
+.headerMain {
+  flex: 1 1 420px;
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.eyebrow {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.title {
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, Consolas, monospace !important;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.badges [data-badge] {
+  font-size: 14px;
+  padding: 4px 12px;
+}
+
+.meta {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.headerSide {
+  display: grid;
+  gap: 20px;
+  justify-items: end;
+  align-content: start;
+  flex: 0 1 auto;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progressTrack {
+  display: block;
+  width: 120px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.progressLabel {
+  font-family: var(--font-mono), ui-monospace, Consolas, monospace;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.quickPill {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quickPill:hover {
+  border-color: var(--color-primary);
+}
+
+.notices {
+  display: grid;
+  gap: 12px;
+}
+
+/* Actions */
+.actions {
+  display: grid;
+  gap: 16px;
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actionPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 20px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.actionPill:hover:not(:disabled) {
+  background: var(--color-bg);
+  border-color: var(--color-text-muted);
+}
+
+.actionPill[aria-expanded="true"] {
+  border-width: 2px;
+  border-color: currentColor;
+  padding-inline: 19px;
+}
+
+.actionPill:disabled {
+  cursor: not-allowed;
+  color: #8a9ba3;
+  background: #f7f9f9;
+  border-color: var(--color-border);
+}
+
+.primary {
+  color: var(--color-primary-hover);
+  border-color: #9fcfca;
+}
+
+.danger {
+  color: var(--color-error);
+  border-color: #e3b1b1;
+}
+
+.warning {
+  color: #8a5211;
+  border-color: #e2c08f;
+}
+
+.confirm {
+  display: grid;
+  gap: 16px;
+  max-width: 720px;
+  padding: 24px 28px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.confirmTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.confirmHint {
+  font-size: 15px;
+  color: var(--color-text-muted);
+}
+
+.confirmButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.status:empty {
+  display: none;
+}
+
+/* Tabs */
+.tabsWrap {
+  scroll-margin-top: 96px;
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border);
+  min-width: max-content;
+}
+
+.tab {
+  position: relative;
+  min-height: 52px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 8px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-primary);
+}
+
+.panel {
+  display: grid;
+  gap: 24px;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel:focus-visible {
+  outline-offset: 6px;
+}
+
+/* Section cards */
+.card {
+  padding: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cardTitle {
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.fields {
+  display: grid;
+  gap: 24px 48px;
+  margin: 0;
+}
+
+.fields dt {
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.fields dd {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .headerCard,
+  .card {
+    padding: 24px 20px;
+    border-radius: 24px;
+  }
+  .headerSide {
+    justify-items: start;
+  }
+  .quick {
+    justify-content: flex-start;
+  }
+  .title {
+    font-size: 24px;
+  }
+}

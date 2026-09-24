@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+.backup/
+test-results/
+playwright-report/
+.opencode/
+# Source copy of the hero video; the site uses public/media/hero-background.mp4
+/gemini_generated_video_*.mp4

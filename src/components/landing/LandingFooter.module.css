@@ -1,0 +1,101 @@
+/* Landing footer — reference layout: 64px top / 32px bottom padding, brand
+   column (max 384px, 15px/24px text) on the start side, link column with a
+   14px/700 display-font heading on the end side, bottom bar with the note and
+   language toggle. Colours stay RPCMS navy. */
+
+.footer {
+  background: var(--color-navy);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 64px 0 32px;
+}
+
+.inner {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.top {
+  display: grid;
+  gap: 48px;
+}
+
+.brand {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  max-width: 384px;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  margin-top: 4px;
+}
+
+.summary {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.bottom {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--color-on-navy-muted);
+}
+
+.footer :focus-visible {
+  outline-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding-inline: 48px;
+  }
+  .top {
+    grid-template-columns: minmax(0, 384px) auto;
+    justify-content: space-between;
+    gap: 64px;
+  }
+}

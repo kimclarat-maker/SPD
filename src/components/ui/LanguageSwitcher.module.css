@@ -1,0 +1,68 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.label {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+}
+
+.control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select {
+  appearance: none;
+  min-height: var(--touch-target);
+  padding-block: 8px;
+  padding-inline: 36px 34px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.select:hover {
+  border-color: var(--color-primary);
+}
+
+.globe,
+.chevron {
+  position: absolute;
+  pointer-events: none;
+  color: var(--color-text-muted);
+}
+
+.globe {
+  inset-inline-start: 11px;
+}
+
+.chevron {
+  inset-inline-end: 11px;
+}
+
+.onDark .label {
+  color: var(--color-on-navy);
+}
+
+.onDark .select {
+  background: transparent;
+  color: var(--color-on-navy);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.onDark .select option {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.onDark .globe,
+.onDark .chevron {
+  color: var(--color-on-navy-muted);
+}
