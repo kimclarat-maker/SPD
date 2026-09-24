@@ -60,7 +60,6 @@
 
 .identity {
   padding: 32px 32px 24px;
-  border-bottom: 1px solid var(--color-border);
   display: grid;
   gap: 4px;
 }
@@ -90,21 +89,6 @@
 .identityRole {
   font-size: 14px;
   color: var(--color-text-muted);
-}
-
-.mfa {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.4;
-  color: #8a5211;
-}
-
-.mfa svg {
-  flex: none;
-  margin-top: 2px;
 }
 
 .avatar {
@@ -266,7 +250,6 @@
 }
 
 .drawerHead .identity {
-  border-bottom: 0;
   padding: 24px;
 }
 
@@ -300,7 +283,6 @@
   min-height: 64px;
   padding: 8px 24px;
   background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid var(--color-border);
   flex-wrap: wrap;
 }
 
@@ -339,7 +321,6 @@
   flex-wrap: wrap;
   padding: 8px 24px;
   background: var(--color-accent-soft);
-  border-bottom: 1px solid #c9dce6;
   font-size: 14px;
   color: #1f4458;
 }

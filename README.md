@@ -45,7 +45,7 @@ src/app/(auth)/        sign-in, forgot-password (+ requested), reset-password (e
 src/app/portal/        coordinator portal; layout = sidebar + top bar (client, session-guarded)
 src/components/ui/     design-system primitives (Button, Badge, Field, Notice, Icon, LanguageSwitcher…)
 src/components/site/   public header, footer, product preview
-src/components/portal/ shell, tables, decision panel, audit timeline, map, and one view file per screen
+src/components/portal/ shell, tables, decision panel, audit timeline, coverage map, GIS map, and one view file per screen
 src/lib/services/      typed async service functions: the only layer the UI calls
 src/lib/services/external.ts   SIMULATED integrations (verification, SMS/email, e-signature, data exchange)
 src/lib/demo/          fictional seed data + browser store (replace with API calls later)
@@ -54,6 +54,10 @@ src/styles/globals.css design tokens (colours, type, 8px spacing, radii) shared 
 ```
 
 To connect a real API, reimplement the functions in `src/lib/services/*` against it. The screens depend only on those function signatures and the types in `src/lib/types.ts`.
+
+## GIS tracking & monitoring
+
+`/portal/gis` plots live, computed status per settlement (partners, interventions, field reports, open/overdue cases, open exceptions, people reached) on an interactive map (`react-leaflet` + OpenStreetMap tiles). Settlement coordinates in `src/lib/demo/reference.ts` are approximate and settlement-level only — never an individual location, matching the existing schematic coverage map on the dashboard. Loading the page fetches map tiles from `tile.openstreetmap.org`, the only outbound network call in the prototype; every other screen works fully offline.
 
 ## Languages
 

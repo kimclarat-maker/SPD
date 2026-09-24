@@ -2,7 +2,17 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const publicPages = ["/", "/sign-in", "/forgot-password", "/forgot-password/requested", "/reset-password", "/about", "/privacy", "/accessibility"];
-const portalPages = ["/portal", "/portal/partners/p-kcha", "/portal/interventions", "/portal/exceptions/ex-0311", "/portal/cases/sc-1184", "/portal/reports/nr-2026-q3", "/portal/audit", "/portal/analytics"];
+const portalPages = [
+  "/portal",
+  "/portal/partners/p-kcha",
+  "/portal/interventions",
+  "/portal/exceptions/ex-0311",
+  "/portal/cases/sc-1184",
+  "/portal/reports/nr-2026-q3",
+  "/portal/audit",
+  "/portal/analytics",
+  "/portal/gis",
+];
 
 async function scan(page: import("@playwright/test").Page) {
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();

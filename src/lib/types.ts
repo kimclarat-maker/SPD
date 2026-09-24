@@ -17,6 +17,9 @@ export interface Settlement {
   /** Position on the schematic map (0–100). Settlement-level only; never an individual location. */
   x: number;
   y: number;
+  /** Approximate settlement-level coordinates for the GIS map. Never an individual location. */
+  lat: number;
+  lng: number;
 }
 
 export type PartnerStatus = "pending" | "approved" | "rejected" | "suspended";

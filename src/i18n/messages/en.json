@@ -298,7 +298,6 @@
     "roleName": "OPM National Coordinator",
     "portalName": "Coordinator portal",
     "demoBanner": "Demonstration session with fictional records. Changes are saved only in this browser.",
-    "noMfa": "Multi-factor verification not active (prototype)",
     "signOut": "Sign out",
     "signedInAs": "Signed in as {name}",
     "resetDemo": "Reset demonstration data",
@@ -320,7 +319,8 @@
       "audit": "Audit trail",
       "groupWork": "Coordination",
       "groupOversight": "Oversight",
-      "analytics": "Analytics"
+      "analytics": "Analytics",
+      "gis": "GIS tracking & monitoring"
     },
     "table": {
       "empty": "No records match these filters.",
@@ -734,6 +734,42 @@
       "day": "Day",
       "events": "Events",
       "eventsCount": "{count} events"
+    },
+    "gis": {
+      "title": "GIS tracking & monitoring",
+      "intro": "Live status by settlement, plotted on an approximate, settlement-level map. No individual locations are shown.",
+      "mapRegion": "Interactive map of settlement status",
+      "mapCaption": "Marker colour shows status; marker size shows the number of interventions. Positions are approximate and settlement-level only, never an individual location.",
+      "legendTitle": "Status",
+      "legendClear": "Clear — nothing outstanding",
+      "legendWatch": "Watch — items awaiting review",
+      "legendAttention": "Needs attention — overdue cases or open exceptions",
+      "statusClear": "Clear",
+      "statusWatch": "Watch",
+      "statusAttention": "Needs attention",
+      "tilePartners": "Approved partners",
+      "tileInterventions": "Interventions",
+      "tileReached": "People reached",
+      "tileOpenCases": "Open service cases",
+      "tileOpenExceptions": "Open assistance exceptions",
+      "tableTitle": "Settlement monitoring table",
+      "tableStatus": "Status",
+      "tablePartners": "Partners",
+      "tableInterventions": "Interventions",
+      "tableFieldReports": "Field reports",
+      "tableOpenCases": "Open cases",
+      "tableOpenExceptions": "Open exceptions",
+      "tableReached": "People reached",
+      "tableUpdated": "Last activity",
+      "noActivity": "No recorded activity",
+      "overdueCount": "{count} overdue",
+      "popupPartners": "Approved partners",
+      "popupInterventions": "Interventions",
+      "popupReached": "People reached",
+      "popupOpenCases": "Open cases",
+      "popupOverdueCases": "Overdue cases",
+      "popupOpenExceptions": "Open exceptions",
+      "popupUpdated": "Last activity {date}"
     }
   }
 }

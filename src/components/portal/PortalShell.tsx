@@ -34,6 +34,7 @@ const groups: { label: MessageKey; items: NavItem[] }[] = [
     label: "portal.nav.groupOversight",
     items: [
       { href: "/portal/analytics", label: "portal.nav.analytics", icon: "barChart" },
+      { href: "/portal/gis", label: "portal.nav.gis", icon: "map" },
       { href: "/portal/reports", label: "portal.nav.reports", icon: "fileCheck", entity: "report" },
       { href: "/portal/integrations", label: "portal.nav.integrations", icon: "link", entity: "integration" },
       { href: "/portal/audit", label: "portal.nav.audit", icon: "history" },
@@ -136,10 +137,6 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
           <p className={styles.identityName}>{session.displayName}</p>
           <p className={styles.identityRole}>
             {t("portal.roleName")} · {t("portal.scope")}
-          </p>
-          <p className={styles.mfa}>
-            <Icon name="alertTriangle" size={14} />
-            {t("portal.noMfa")}
           </p>
         </>
       )}

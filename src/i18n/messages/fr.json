@@ -286,7 +286,6 @@
     "roleName": "Coordinateur national de l’OPM",
     "portalName": "Portail du coordinateur",
     "demoBanner": "Session de démonstration avec des dossiers fictifs. Les modifications sont enregistrées uniquement dans ce navigateur.",
-    "noMfa": "Vérification multifacteur non active (prototype)",
     "signOut": "Se déconnecter",
     "signedInAs": "Connecté en tant que {name}",
     "resetDemo": "Réinitialiser les données de démonstration",
