@@ -29,8 +29,8 @@ const capabilities: { key: "partners" | "gis" | "forms" | "assistance" | "servic
 
 const audiences: { key: "opm" | "partners" | "field" | "refugees"; icon: IconName; available: boolean }[] = [
   { key: "opm", icon: "building", available: true },
-  { key: "partners", icon: "handshake", available: false },
-  { key: "field", icon: "smartphone", available: false },
+  { key: "partners", icon: "handshake", available: true },
+  { key: "field", icon: "smartphone", available: true },
   { key: "refugees", icon: "users", available: false },
 ];
 
@@ -158,7 +158,7 @@ export default async function LandingPage() {
                 <p className={styles.cardText}>{t(`landing.audiences.${audience.key}.body`)}</p>
                 {audience.available && (
                   <Link href="/sign-in" className={styles.audienceLink}>
-                    {t("landing.audiences.signInOpm")}
+                    {t(audience.key === "partners" ? "landing.audiences.signInPartner" : audience.key === "field" ? "landing.audiences.signInField" : "landing.audiences.signInOpm")}
                     <Icon name="arrowRight" size={18} />
                   </Link>
                 )}

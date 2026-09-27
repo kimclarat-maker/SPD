@@ -1,121 +1,161 @@
 "use client";
 
-import type { Sector } from "@/lib/types";
+import type { InterventionStatus, Sector, ServicePointType } from "@/lib/types";
 import { getState } from "@/lib/demo/store";
-import { settlements } from "@/lib/demo/reference";
-import { isOverdue } from "./cases";
+import { match, placeMatches, type RecordFilters } from "./filters";
+import { APPROVED_WORK, interventionProgress } from "./interventions";
+import { isOverdue, OPEN_CASE } from "./cases";
+import { totalReached } from "./fieldReports";
 
-export type SettlementAlertLevel = "clear" | "watch" | "attention";
+export type GisView = "coverage" | "gaps" | "progress";
+export type StatusFilter = "all" | "live" | "pipeline" | "closed";
 
-export interface SettlementMonitoring {
-  settlementId: string;
+export interface SettlementFeature {
+  id: string;
   name: string;
+  district: string;
   region: string;
   lat: number;
   lng: number;
+  interventions: number;
   partners: number;
-  interventions: { total: number; approved: number; submitted: number; completed: number };
-  fieldReports: { accepted: number; submitted: number; held: number };
+  sectorsCovered: Sector[];
+  sectorsMissing: Sector[];
+  progress: number;
+  peopleReached: number;
   openCases: number;
   overdueCases: number;
-  openExceptions: number;
-  peopleReached: number;
-  lastActivityAt: string | null;
-  alertLevel: SettlementAlertLevel;
+  lastActivityAt?: string;
 }
 
-export interface GisOverview {
-  rows: SettlementMonitoring[];
-  totals: {
-    partners: number;
-    interventions: number;
-    peopleReached: number;
-    openCases: number;
-    openExceptions: number;
-  };
+export interface InterventionFeature {
+  id: string;
+  ref: string;
+  title: string;
+  status: InterventionStatus;
+  sector: Sector;
+  partnerName: string;
+  settlementId: string;
+  lat: number;
+  lng: number;
+  progress: number;
 }
+
+export interface ActivityFeature {
+  id: string;
+  ref: string;
+  title: string;
+  status: string;
+  collectedAt: string;
+  interventionRef: string;
+  servicePointName: string;
+  lat: number;
+  lng: number;
+}
+
+export interface ServicePointFeature {
+  id: string;
+  name: string;
+  type: ServicePointType;
+  settlementId: string;
+  lat: number;
+  lng: number;
+  interventions: number;
+}
+
+export interface GisData {
+  settlements: SettlementFeature[];
+  interventions: InterventionFeature[];
+  activities: ActivityFeature[];
+  servicePoints: ServicePointFeature[];
+}
+
+const STATUS_GROUPS: Record<StatusFilter, InterventionStatus[]> = {
+  all: ["submitted", "coordination_review", "approved", "active", "completed", "closed", "changes_requested"],
+  live: ["approved", "active"],
+  pipeline: ["submitted", "coordination_review", "changes_requested"],
+  closed: ["completed", "closed"],
+};
 
 /**
- * Settlement-level GIS tracking and monitoring aggregate. Positions are the
- * settlement's approximate public location, never an individual one; every
- * figure is computed live from the current demo state so the map always
- * agrees with the record screens.
+ * Map features. Every position is a settlement centre or a public service
+ * point (a facility). Households and individuals are never mapped, so the map
+ * is safe for broadly accessible use.
  */
-export async function getGisOverview(sector?: Sector): Promise<GisOverview> {
+export async function getGisData(f: RecordFilters, status: StatusFilter): Promise<GisData> {
   const state = getState();
-
-  const rows: SettlementMonitoring[] = settlements.map((s) => {
-    const partners = state.partners.filter(
-      (p) => p.settlementIds.includes(s.id) && p.status === "approved" && (!sector || p.sectors.includes(sector)),
-    ).length;
-
-    const interventionsHere = state.interventions.filter((i) => i.settlementId === s.id && (!sector || i.sector === sector));
-    const interventionIds = new Set(interventionsHere.map((i) => i.id));
-
-    const fieldReportsHere = state.fieldReports.filter((r) => interventionIds.has(r.interventionId));
-    const fieldReportIds = new Set(fieldReportsHere.map((r) => r.id));
-
-    const casesHere = state.cases.filter((c) => c.settlementId === s.id);
-    const exceptionsHere = state.exceptions.filter((e) => fieldReportIds.has(e.fieldReportId));
-
-    const peopleReached = fieldReportsHere
-      .filter((r) => r.status === "accepted")
-      .reduce((sum, r) => sum + r.reached.women + r.reached.men + r.reached.children, 0);
-
-    const openCases = casesHere.filter((c) => c.status !== "resolved" && c.status !== "closed").length;
-    const overdueCases = casesHere.filter((c) => isOverdue(c)).length;
-    const openExceptions = exceptionsHere.filter((e) => e.status === "open" || e.status === "escalated").length;
-
-    const dates = [
-      ...interventionsHere.map((i) => i.updatedAt),
-      ...fieldReportsHere.map((r) => r.updatedAt),
-      ...casesHere.map((c) => c.updatedAt),
-      ...exceptionsHere.map((e) => e.updatedAt),
-    ].sort();
-    const lastActivityAt = dates.length ? dates[dates.length - 1] : null;
-
-    const alertLevel: SettlementAlertLevel =
-      openExceptions > 0 || overdueCases > 0
-        ? "attention"
-        : openCases > 0 || interventionsHere.some((i) => i.status === "submitted") || fieldReportsHere.some((r) => r.status === "submitted")
-          ? "watch"
-          : "clear";
-
-    return {
-      settlementId: s.id,
-      name: s.name,
-      region: s.region,
-      lat: s.lat,
-      lng: s.lng,
-      partners,
-      interventions: {
-        total: interventionsHere.length,
-        approved: interventionsHere.filter((i) => i.status === "approved").length,
-        submitted: interventionsHere.filter((i) => i.status === "submitted").length,
-        completed: interventionsHere.filter((i) => i.status === "completed").length,
-      },
-      fieldReports: {
-        accepted: fieldReportsHere.filter((r) => r.status === "accepted").length,
-        submitted: fieldReportsHere.filter((r) => r.status === "submitted").length,
-        held: fieldReportsHere.filter((r) => r.status === "held").length,
-      },
-      openCases,
-      overdueCases,
-      openExceptions,
-      peopleReached,
-      lastActivityAt,
-      alertLevel,
-    };
-  });
-
-  return {
-    rows,
-    totals: {
-      partners: rows.reduce((sum, r) => sum + r.partners, 0),
-      interventions: rows.reduce((sum, r) => sum + r.interventions.total, 0),
-      peopleReached: rows.reduce((sum, r) => sum + r.peopleReached, 0),
-      openCases: rows.reduce((sum, r) => sum + r.openCases, 0),
-      openExceptions: rows.reduce((sum, r) => sum + r.openExceptions, 0),
-    },
+  const allowed = STATUS_GROUPS[status];
+  const interventions = state.interventions.filter((i) => allowed.includes(i.status) && match.intervention(state, i, f));
+  const activeSectors = state.sectors.filter((s) => s.active).map((s) => s.id);
+  const pointOf = (spId: string | undefined, settlementId: string) => {
+    const sp = state.servicePoints.find((x) => x.id === spId);
+    const s = state.settlements.find((x) => x.id === settlementId)!;
+    return sp ? { lat: sp.lat, lng: sp.lng } : { lat: s.lat, lng: s.lng };
   };
+
+  const settlements: SettlementFeature[] = state.settlements
+    .filter((s) => s.active && placeMatches(state, s.id, f))
+    .map((s) => {
+      const here = interventions.filter((i) => i.settlementId === s.id);
+      const live = here.filter((i) => APPROVED_WORK.includes(i.status) && i.status !== "closed");
+      const covered = [...new Set(live.map((i) => i.sector))];
+      const progress = live.map((i) => interventionProgress(state, i));
+      const reports = state.fieldReports.filter((r) => r.status === "accepted" && here.some((i) => i.id === r.interventionId) && match.fieldReport(state, r, f));
+      const cases = state.cases.filter((c) => c.settlementId === s.id && match.case(state, c, f));
+      const dates = [...here.map((i) => i.updatedAt), ...reports.map((r) => r.updatedAt), ...cases.map((c) => c.updatedAt)].sort();
+      return {
+        id: s.id,
+        name: s.name,
+        district: s.district,
+        region: s.region,
+        lat: s.lat,
+        lng: s.lng,
+        interventions: here.length,
+        partners: new Set(here.map((i) => i.partnerId)).size,
+        sectorsCovered: covered,
+        sectorsMissing: (f.sector ? [f.sector] : activeSectors).filter((x) => !covered.includes(x)),
+        progress: progress.length ? Math.round(progress.reduce((sum, p) => sum + p.percent, 0) / progress.length) : 0,
+        peopleReached: reports.reduce((sum, r) => sum + totalReached(r), 0),
+        openCases: cases.filter((c) => OPEN_CASE.includes(c.status)).length,
+        overdueCases: cases.filter((c) => isOverdue(c)).length,
+        lastActivityAt: dates[dates.length - 1],
+      };
+    });
+
+  const interventionFeatures: InterventionFeature[] = interventions.map((i) => ({
+    id: i.id,
+    ref: i.ref,
+    title: i.title,
+    status: i.status,
+    sector: i.sector,
+    partnerName: state.partners.find((p) => p.id === i.partnerId)?.name ?? "—",
+    settlementId: i.settlementId,
+    ...pointOf(i.servicePointIds[0], i.settlementId),
+    progress: interventionProgress(state, i).percent,
+  }));
+
+  const ids = new Set(interventions.map((i) => i.id));
+  const activities: ActivityFeature[] = state.fieldReports
+    .filter((r) => ids.has(r.interventionId) && ["accepted", "synced", "needs_review"].includes(r.status) && match.fieldReport(state, r, f))
+    .map((r) => {
+      const i = interventions.find((x) => x.id === r.interventionId)!;
+      const sp = state.servicePoints.find((x) => x.id === r.servicePointId);
+      // Plot at the facility, never at the raw device position.
+      return {
+        id: r.id,
+        ref: r.ref,
+        title: r.title,
+        status: r.status,
+        collectedAt: r.collectedAt,
+        interventionRef: i.ref,
+        servicePointName: sp?.name ?? "—",
+        ...pointOf(r.servicePointId, i.settlementId),
+      };
+    });
+
+  const servicePoints: ServicePointFeature[] = state.servicePoints
+    .filter((sp) => placeMatches(state, sp.settlementId, f))
+    .map((sp) => ({ ...sp, interventions: interventions.filter((i) => i.servicePointIds.includes(sp.id)).length }));
+
+  return { settlements, interventions: interventionFeatures, activities, servicePoints };
 }

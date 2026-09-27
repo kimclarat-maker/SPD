@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { MessageKey, Translate } from "@/i18n/core";
 import type { AuditEntry } from "@/lib/types";
-import { listAudit, recordHref } from "@/lib/services/audit";
+import { listAudit } from "@/lib/services/audit";
+import { recordHref } from "@/lib/services/lookup";
 import { useServiceQuery } from "@/lib/services/hooks";
 import { Badge } from "@/components/ui/Badge";
 import { Icon } from "@/components/ui/Icon";
@@ -29,8 +30,8 @@ export function AuditList({ entries, emptyLabel, showRecord = false }: { entries
         const href = showRecord ? recordHref(entry.entity, entry.entityId) : null;
         return (
           <li key={entry.id} className={styles.timelineItem}>
-            <span className={styles.timelineDot} aria-hidden="true">
-              <Icon name={entry.actor ? "user" : "refresh"} size={14} />
+            <span className={`${styles.timelineDot} ${entry.sensitive ? styles.timelineSensitive : ""}`} aria-hidden="true">
+              <Icon name={entry.sensitive ? "eye" : entry.actor ? "user" : "refresh"} size={14} />
             </span>
             <div className={styles.timelineBody}>
               <p className={styles.timelineText}>
@@ -40,11 +41,11 @@ export function AuditList({ entries, emptyLabel, showRecord = false }: { entries
                 <time dateTime={entry.at}>{formatDate(entry.at, true)}</time>
                 <span aria-hidden="true"> · </span>
                 <span>{entry.actor ?? t("portal.audit.systemActor")}</span>
-                {entry.simulated && (
-                  <>
-                    {" "}
-                    <Badge tone="simulated">{t("portal.audit.simulatedTag")}</Badge>
-                  </>
+                {entry.simulated && <Badge tone="simulated">{t("portal.audit.simulatedTag")}</Badge>}
+                {entry.sensitive && (
+                  <Badge tone="warning" icon="eye">
+                    {t("portal.audit.sensitiveTag")}
+                  </Badge>
                 )}
               </p>
               {entry.note && <p className={styles.timelineNote}>“{entry.note}”</p>}

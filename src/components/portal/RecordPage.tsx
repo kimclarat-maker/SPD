@@ -8,6 +8,9 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { TextAreaField } from "@/components/ui/Field";
 import { Notice } from "@/components/ui/Notice";
+import type { AuditEntry } from "@/lib/types";
+import { AuditList, AuditTimeline } from "./AuditTimeline";
+import { WorkflowStepper, type StageState } from "./RecordBits";
 import styles from "./RecordPage.module.css";
 
 export interface RecordAction {
@@ -20,28 +23,33 @@ export interface RecordAction {
   /** Hide the note field when the service does not record one. */
   noNote?: boolean;
   disabled?: boolean;
-  /** Extra inputs shown in the confirm step (e.g. choosing a partner). */
+  /** Why the action is unavailable; shown next to the actions. */
+  disabledReason?: string;
+  /** The signed-in role lacks the permission for this action. */
+  denied?: boolean;
+  /** Extra inputs shown in the confirm step (e.g. choosing a team). */
   fields?: ReactNode;
   /** Return false to stay on the confirm step (the caller shows its own field error). */
   validate?: () => boolean;
-  /** Label for the note field when the default ("Decision note") does not fit. */
+  /** Label for the note field when the default ("Reason") does not fit. */
   noteLabel?: string;
   /** Short explanation shown in the confirm step. */
   hint?: ReactNode;
   run: (note: string) => Promise<unknown>;
-  success?: string;
+  success?: string | ((result: unknown) => string);
 }
 
 export interface RecordTab {
   id: string;
   label: string;
   content: ReactNode;
+  count?: number;
 }
 
 /**
- * Layout for every portal record: header card, action pills with a confirm
- * step, then tabbed section cards. Every action still goes through the
- * service layer, which writes the audit trail.
+ * Layout for every portal record: header, workflow path, action pills with a
+ * confirm step, tabbed content, and the record's activity timeline alongside.
+ * Every action goes through the service layer, which writes the audit trail.
  */
 export function RecordPage({
   back,
@@ -51,9 +59,13 @@ export function RecordPage({
   badges,
   meta,
   progress,
+  stages,
   notices,
   actions = [],
   tabs,
+  timelineId,
+  timeline,
+  initialTab,
 }: {
   back: { href: string; label: string };
   eyebrow: ReactNode;
@@ -62,24 +74,20 @@ export function RecordPage({
   badges?: ReactNode;
   meta?: ReactNode;
   progress?: number;
+  stages?: { key: string; label: string; state: StageState }[];
   notices?: ReactNode;
   actions?: RecordAction[];
   tabs: RecordTab[];
+  /** Record id whose audit timeline is shown alongside the content. */
+  timelineId?: string;
+  /** Pre-filtered timeline (the Partner Portal passes only entries the organisation may see). */
+  timeline?: { entries: AuditEntry[]; href?: string };
+  /** Tab to open first, e.g. from a notification link. */
+  initialTab?: string;
 }) {
   const { t } = useI18n();
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id);
-  const tablistRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState(initialTab && tabs.some((tab) => tab.id === initialTab) ? initialTab : tabs[0]?.id);
   const current = tabs.some((tab) => tab.id === activeTab) ? activeTab : tabs[0]?.id;
-  const quick = tabs.slice(1, 5);
-
-  function jumpTo(id: string) {
-    setActiveTab(id);
-    requestAnimationFrame(() => {
-      const tab = document.getElementById(`tab-${id}`);
-      tab?.focus({ preventScroll: true });
-      tablistRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
 
   return (
     <div className={styles.page}>
@@ -95,73 +103,89 @@ export function RecordPage({
           {badges && <div className={styles.badges}>{badges}</div>}
           {meta && <p className={styles.meta}>{meta}</p>}
         </div>
-        {(progress !== undefined || quick.length > 0) && (
+        {progress !== undefined && (
           <div className={styles.headerSide}>
-            {progress !== undefined && (
-              <div className={styles.progress}>
-                <span
-                  className={styles.progressTrack}
-                  role="progressbar"
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={progress}
-                  aria-label={t("portal.detail.progress", { percent: progress })}
-                >
-                  <span className={styles.progressFill} style={{ width: `${progress}%` }} />
-                </span>
-                <span className={styles.progressLabel} aria-hidden="true">
-                  {t("portal.detail.progress", { percent: progress })}
-                </span>
-              </div>
-            )}
-            {quick.length > 0 && (
-              <nav aria-label={t("portal.detail.jumpTo")} className={styles.quick}>
-                {quick.map((tab) => (
-                  <button key={tab.id} type="button" className={styles.quickPill} onClick={() => jumpTo(tab.id)}>
-                    {tab.label}
-                  </button>
-                ))}
-              </nav>
-            )}
+            <div className={styles.progress}>
+              <span
+                className={styles.progressTrack}
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress}
+                aria-label={t("portal.detail.progress", { percent: progress })}
+              >
+                <span className={styles.progressFill} style={{ width: `${progress}%` }} />
+              </span>
+              <span className={styles.progressLabel} aria-hidden="true">
+                {t("portal.detail.progress", { percent: progress })}
+              </span>
+            </div>
+          </div>
+        )}
+        {stages && (
+          <div className={styles.stages}>
+            <WorkflowStepper label={t("portal.detail.workflow")} stages={stages} />
           </div>
         )}
       </header>
 
       {notices && <div className={styles.notices}>{notices}</div>}
 
-      {actions.length > 0 && <ActionBar actions={actions} />}
+      <ActionBar actions={actions} />
 
-      <div ref={tablistRef} className={styles.tabsWrap}>
-        <Tabs tabs={tabs} active={current} onChange={setActiveTab} label={t("portal.detail.sections")} />
-      </div>
-      {tabs.map((tab) => (
-        <div
-          key={tab.id}
-          id={`panel-${tab.id}`}
-          role="tabpanel"
-          aria-labelledby={`tab-${tab.id}`}
-          hidden={tab.id !== current}
-          className={styles.panel}
-          tabIndex={0}
-        >
-          {tab.content}
+      <div className={timelineId || timeline ? styles.split : undefined}>
+        <div className={styles.mainCol}>
+          <div className={styles.tabsWrap}>
+            <Tabs tabs={tabs} active={current} onChange={setActiveTab} label={t("portal.detail.sections")} />
+          </div>
+          {tabs.map((tab) => (
+            <div
+              key={tab.id}
+              id={`panel-${tab.id}`}
+              role="tabpanel"
+              aria-labelledby={`tab-${tab.id}`}
+              hidden={tab.id !== current}
+              className={styles.panel}
+              tabIndex={0}
+            >
+              {tab.content}
+            </div>
+          ))}
         </div>
-      ))}
+        {timeline && (
+          <aside className={styles.aside} aria-labelledby="record-activity-title">
+            <div className={styles.cardHead}>
+              <h2 id="record-activity-title" className={styles.asideTitle}>
+                {t("portal.detail.timeline")}
+              </h2>
+              {timeline.href && (
+                <Link href={timeline.href} className={styles.asideLink}>
+                  {t("portal.detail.fullHistory")}
+                </Link>
+              )}
+            </div>
+            <AuditList entries={timeline.entries.slice(0, 12)} emptyLabel={t("portal.detail.timelineEmpty")} />
+          </aside>
+        )}
+        {!timeline && timelineId && (
+          <aside className={styles.aside} aria-labelledby="record-activity-title">
+            <div className={styles.cardHead}>
+              <h2 id="record-activity-title" className={styles.asideTitle}>
+                {t("portal.detail.timeline")}
+              </h2>
+              <Link href={`/portal/audit?record=${encodeURIComponent(timelineId)}`} className={styles.asideLink}>
+                {t("portal.detail.fullHistory")}
+              </Link>
+            </div>
+            <AuditTimeline entityId={timelineId} limit={12} />
+          </aside>
+        )}
+      </div>
     </div>
   );
 }
 
-function Tabs({
-  tabs,
-  active,
-  onChange,
-  label,
-}: {
-  tabs: RecordTab[];
-  active?: string;
-  onChange: (id: string) => void;
-  label: string;
-}) {
+function Tabs({ tabs, active, onChange, label }: { tabs: RecordTab[]; active?: string; onChange: (id: string) => void; label: string }) {
   const { dir } = useI18n();
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
@@ -196,6 +220,7 @@ function Tabs({
             onClick={() => onChange(tab.id)}
           >
             {tab.label}
+            {tab.count !== undefined && <span className={styles.tabCount}>{tab.count}</span>}
           </button>
         );
       })}
@@ -203,7 +228,23 @@ function Tabs({
   );
 }
 
-/** Pill action row. Choosing an action opens a confirm step with its note and any extra fields. */
+/** Keyboard-accessible tab strip for list pages (same look as record tabs). */
+export function PageTabs({ tabs, active, onChange, label }: { tabs: RecordTab[]; active: string; onChange: (id: string) => void; label: string }) {
+  return (
+    <>
+      <div className={styles.tabsWrap}>
+        <Tabs tabs={tabs} active={active} onChange={onChange} label={label} />
+      </div>
+      {tabs.map((tab) => (
+        <div key={tab.id} id={`panel-${tab.id}`} role="tabpanel" aria-labelledby={`tab-${tab.id}`} hidden={tab.id !== active} className={styles.panel} tabIndex={0}>
+          {tab.id === active && tab.content}
+        </div>
+      ))}
+    </>
+  );
+}
+
+/** Pill action row. Choosing an action opens a confirm step with its reason and any extra fields. */
 export function ActionBar({ actions }: { actions: RecordAction[] }) {
   const { t } = useI18n();
   const id = useId();
@@ -215,6 +256,8 @@ export function ActionBar({ actions }: { actions: RecordAction[] }) {
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const action = actions.find((a) => a.key === selected);
+  const reasons = actions.filter((a) => (a.disabled || a.denied) && (a.disabledReason || a.denied));
+  const anyDenied = actions.some((a) => a.denied);
 
   // Drop the confirm step if its action is no longer available (e.g. after the record changed).
   useEffect(() => {
@@ -255,8 +298,8 @@ export function ActionBar({ actions }: { actions: RecordAction[] }) {
   }
 
   return (
-    <section className={styles.actions} aria-label={t("portal.detail.actions")}>
-      <div className={styles.actionRow}>
+    <section className={styles.actions} aria-label={t("portal.detail.actions")} hidden={actions.length === 0 && !success && !error}>
+      <div className={styles.actionRow} hidden={actions.length === 0}>
         {actions.map((a) => (
           <button
             key={a.key}
@@ -265,16 +308,29 @@ export function ActionBar({ actions }: { actions: RecordAction[] }) {
             }}
             type="button"
             className={`${styles.actionPill} ${styles[a.tone ?? "neutral"]}`}
-            disabled={a.disabled || Boolean(pending)}
+            disabled={a.disabled || a.denied || Boolean(pending)}
             aria-expanded={selected === a.key}
             aria-controls={`${id}-confirm`}
+            aria-describedby={a.disabled || a.denied ? `${id}-reasons` : undefined}
             onClick={() => (selected === a.key ? cancel() : open(a.key))}
           >
-            {a.icon && <Icon name={a.icon} size={18} />}
+            {a.icon && <Icon name={a.denied ? "lock" : a.icon} size={18} />}
             {a.label}
           </button>
         ))}
       </div>
+      {reasons.length > 0 && (
+        <ul id={`${id}-reasons`} className={styles.reasons}>
+          {anyDenied && <li>{t("portal.denied.actions")}</li>}
+          {reasons
+            .filter((a) => a.disabledReason && !a.denied)
+            .map((a) => (
+              <li key={a.key}>
+                <strong>{a.label}:</strong> {a.disabledReason}
+              </li>
+            ))}
+        </ul>
+      )}
 
       {action && (
         <div ref={panelRef} id={`${id}-confirm`} className={styles.confirm} role="group" aria-labelledby={`${id}-confirm-title`}>
@@ -284,16 +340,16 @@ export function ActionBar({ actions }: { actions: RecordAction[] }) {
           {action.hint && <div className={styles.confirmHint}>{action.hint}</div>}
           {action.fields}
           {!action.noNote && (
-          <TextAreaField
-            ref={noteRef}
-            id={`${id}-note`}
-            label={action.noteLabel ?? t("portal.detail.note")}
-            hint={t("portal.detail.noteHint")}
-            requiredLabel={action.requiresNote ? undefined : t("common.optional")}
-            value={note}
-            error={noteError}
-            onChange={(e) => setNote(e.target.value)}
-          />
+            <TextAreaField
+              ref={noteRef}
+              id={`${id}-note`}
+              label={action.noteLabel ?? t("portal.detail.note")}
+              hint={t("portal.detail.noteHint")}
+              requiredLabel={action.requiresNote ? t("common.requiredMarker") : t("common.optional")}
+              value={note}
+              error={noteError}
+              onChange={(e) => setNote(e.target.value)}
+            />
           )}
           <div className={styles.confirmButtons}>
             <Button

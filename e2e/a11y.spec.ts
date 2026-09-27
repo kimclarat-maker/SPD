@@ -4,14 +4,29 @@ import { expect, test } from "@playwright/test";
 const publicPages = ["/", "/sign-in", "/forgot-password", "/forgot-password/requested", "/reset-password", "/about", "/privacy", "/accessibility"];
 const portalPages = [
   "/portal",
+  "/portal/notifications",
+  "/portal/partners",
   "/portal/partners/p-kcha",
   "/portal/interventions",
-  "/portal/exceptions/ex-0311",
+  "/portal/interventions/i-0147",
+  "/portal/field-reports",
+  "/portal/field-reports/fr-0929",
+  "/portal/surveys",
+  "/portal/surveys/forms/frm-dist",
+  "/portal/surveys/indicators/ind-hlt-02",
+  "/portal/beneficiaries",
+  "/portal/beneficiaries/reviews/rv-0305",
+  "/portal/cases",
   "/portal/cases/sc-1184",
-  "/portal/reports/nr-2026-q3",
-  "/portal/audit",
-  "/portal/analytics",
+  "/portal/documents",
+  "/portal/documents/doc-p-kcha-mou",
   "/portal/gis",
+  "/portal/reports",
+  "/portal/reports/rep-q3",
+  "/portal/integrations",
+  "/portal/integrations/progres",
+  "/portal/audit",
+  "/portal/admin",
 ];
 
 async function scan(page: import("@playwright/test").Page) {
@@ -27,6 +42,7 @@ for (const path of publicPages) {
 }
 
 test("axe: portal screens", async ({ page }) => {
+  test.setTimeout(300_000);
   await page.goto("/sign-in");
   await page.getByLabel("Email or assigned username").fill("coordinator.demo");
   await page.getByLabel("Password", { exact: true }).fill("Demo-Coordinator-2026");

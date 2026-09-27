@@ -1,6 +1,6 @@
 "use client";
 
-import type { AuditEntry, DemoState, OutboxMessage } from "@/lib/types";
+import type { AuditEntry, DemoState, StoredNotification } from "@/lib/types";
 import { createSeed, SEED_VERSION } from "./seed";
 
 /**
@@ -8,7 +8,7 @@ import { createSeed, SEED_VERSION } from "./seed";
  * (src/lib/services) should import this module; UI code talks to services.
  * Replacing the services with API calls removes the need for this file.
  */
-const STORAGE_KEY = "rpcms-demo-state-v1";
+const STORAGE_KEY = "rpcms-demo-state-v2";
 
 type Listener = () => void;
 
@@ -21,7 +21,7 @@ function read(): DemoState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as DemoState;
-      if (parsed && parsed.version === SEED_VERSION && Array.isArray(parsed.partners)) return parsed;
+      if (parsed && parsed.version === SEED_VERSION && Array.isArray(parsed.partners) && Array.isArray(parsed.reviews)) return parsed;
     }
   } catch {
     // Corrupt or unavailable storage: fall through to a fresh seed.
@@ -84,8 +84,8 @@ export function addAudit(draft: DemoState, entry: Omit<AuditEntry, "id" | "at"> 
   draft.audit.unshift({ id: newId("a"), at: entry.at ?? new Date().toISOString(), ...entry });
 }
 
-export function addOutbox(draft: DemoState, message: Omit<OutboxMessage, "id" | "at">): void {
-  draft.outbox.unshift({ id: newId("o"), at: new Date().toISOString(), ...message });
+export function addNotification(draft: DemoState, notification: Omit<StoredNotification, "id" | "at">): void {
+  draft.notifications.unshift({ id: newId("n"), at: new Date().toISOString(), ...notification });
 }
 
 // Keep several open tabs in step with each other.

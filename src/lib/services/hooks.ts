@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { getVersion, subscribe } from "@/lib/demo/store";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { MessageKey } from "@/i18n/core";
-import { ServiceError } from "./core";
+import type { Permission } from "@/lib/types";
+import { hasPermission, ServiceError } from "./core";
 
 /**
  * Runs an async service read and re-runs it whenever demo data changes.
@@ -36,7 +37,20 @@ export function useServiceQuery<T>(fetcher: () => Promise<T>, deps: unknown[] = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, ...deps]);
 
-  return { data, error, loading, notFound: error instanceof ServiceError && error.code === "NOT_FOUND" };
+  return {
+    data,
+    error,
+    loading,
+    notFound: error instanceof ServiceError && error.code === "NOT_FOUND",
+    forbidden: error instanceof ServiceError && (error.code === "FORBIDDEN" || error.code === "OUT_OF_SCOPE"),
+  };
+}
+
+/** Permission check for showing or disabling controls. The service layer enforces the same rule. */
+export function useCan() {
+  const version = useSyncExternalStore(subscribe, getVersion, () => 0);
+  void version;
+  return useCallback((permission: Permission) => hasPermission(permission), []);
 }
 
 export function useErrorMessage() {
@@ -58,13 +72,13 @@ export function useServiceAction() {
   const [success, setSuccess] = useState<string | null>(null);
 
   const run = useCallback(
-    async (name: string, action: () => Promise<unknown>, successMessage?: string): Promise<boolean> => {
+    async (name: string, action: () => Promise<unknown>, successMessage?: string | ((result: unknown) => string)): Promise<boolean> => {
       setPending(name);
       setError(null);
       setSuccess(null);
       try {
-        await action();
-        if (successMessage) setSuccess(successMessage);
+        const result = await action();
+        if (successMessage) setSuccess(typeof successMessage === "function" ? successMessage(result) : successMessage);
         return true;
       } catch (err) {
         setError(toMessage(err));

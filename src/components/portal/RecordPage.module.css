@@ -2,7 +2,7 @@
 
 .page {
   display: grid;
-  gap: 24px;
+  gap: 16px;
   max-width: 1360px;
 }
 
@@ -27,12 +27,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 24px 32px;
-  padding: 32px;
+  gap: 16px 24px;
+  padding: 20px 24px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
 }
 
 .headerMain {
@@ -53,7 +52,7 @@
 }
 
 .title {
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1.25;
   font-weight: 700;
   color: var(--color-text);
@@ -163,13 +162,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 50px;
-  padding: 0 20px;
+  min-height: 42px;
+  padding: 0 16px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   color: var(--color-text);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 150ms ease, border-color 150ms ease;
@@ -183,7 +182,7 @@
 .actionPill[aria-expanded="true"] {
   border-width: 2px;
   border-color: currentColor;
-  padding-inline: 19px;
+  padding-inline: 15px;
 }
 
 .actionPill:disabled {
@@ -212,10 +211,10 @@
   display: grid;
   gap: 16px;
   max-width: 720px;
-  padding: 24px 28px;
+  padding: 18px 20px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 24px;
+  border-radius: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
@@ -255,12 +254,12 @@
 
 .tab {
   position: relative;
-  min-height: 52px;
-  padding: 0 18px;
+  min-height: 44px;
+  padding: 0 14px;
   border: 0;
   background: transparent;
   color: var(--color-text-muted);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
@@ -286,7 +285,8 @@
 
 .panel {
   display: grid;
-  gap: 24px;
+  gap: 16px;
+  padding-top: 16px;
 }
 
 .panel[hidden] {
@@ -299,13 +299,12 @@
 
 /* Section cards */
 .card {
-  padding: 32px;
+  padding: 20px 24px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
   display: grid;
-  gap: 24px;
+  gap: 16px;
   min-width: 0;
 }
 
@@ -318,14 +317,14 @@
 }
 
 .cardTitle {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.3;
   font-weight: 700;
 }
 
 .fields {
   display: grid;
-  gap: 24px 48px;
+  gap: 16px 32px;
   margin: 0;
 }
 
@@ -341,7 +340,7 @@
 
 .fields dd {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -359,8 +358,8 @@
 @media (max-width: 640px) {
   .headerCard,
   .card {
-    padding: 24px 20px;
-    border-radius: 24px;
+    padding: 16px;
+    border-radius: 14px;
   }
   .headerSide {
     justify-items: start;
@@ -371,4 +370,82 @@
   .title {
     font-size: 24px;
   }
+}
+
+.stages {
+  flex-basis: 100%;
+  border-top: 1px solid var(--color-border);
+  padding-top: 14px;
+}
+
+.split {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (min-width: 1180px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+  .aside {
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+}
+
+.mainCol {
+  min-width: 0;
+}
+
+.aside {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 16px 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.asideTitle {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.asideLink {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tabCount {
+  display: inline-block;
+  margin-inline-start: 6px;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.reasons {
+  margin: 0;
+  padding: 10px 14px;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border-radius: 12px;
+}
+
+.actions[hidden],
+.actionRow[hidden] {
+  display: none;
 }

@@ -90,7 +90,7 @@ export function ChartCard({
       </div>
       {children}
       <details className={styles.tableToggle}>
-        <summary>{t("portal.analytics.showTable")}</summary>
+        <summary>{t("portal.charts.showTable")}</summary>
         <div className={styles.tableScroll} tabIndex={0} role="region" aria-label={table.caption}>
           <table className={styles.table}>
             <caption className="visually-hidden">{table.caption}</caption>

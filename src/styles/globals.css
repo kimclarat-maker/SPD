@@ -207,3 +207,26 @@ textarea {
     outline: 3px solid CanvasText;
   }
 }
+
+/* Report PDF export: print only the report preview. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    inset: 0;
+    padding: 16px;
+  }
+  .print-area .no-print {
+    display: none;
+  }
+  .print-area table {
+    min-width: 0 !important;
+    font-size: 11px;
+  }
+}

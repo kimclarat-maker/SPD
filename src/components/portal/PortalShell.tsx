@@ -5,10 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { MessageKey } from "@/i18n/core";
-import type { DemoSession, EntityType } from "@/lib/types";
-import { getSession, signOut } from "@/lib/services/session";
-import { getAlerts, resetDemo } from "@/lib/services/dashboard";
-import { useServiceQuery } from "@/lib/services/hooks";
+import type { DemoSession, EntityType, Permission } from "@/lib/types";
+import { getSession, homeFor, signOut } from "@/lib/services/session";
+import { getAttentionCounts, resetDemo } from "@/lib/services/dashboard";
+import { listNotifications } from "@/lib/services/notifications";
+import { useCan, useServiceQuery } from "@/lib/services/hooks";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
@@ -16,28 +17,46 @@ import { Badge } from "@/components/ui/Badge";
 import { LanguagePills } from "@/components/ui/LanguagePills";
 import styles from "./PortalShell.module.css";
 
-type NavItem = { href: string; label: MessageKey; icon: IconName; entity?: EntityType };
+type NavItem = { href: string; label: MessageKey; icon: IconName; entity?: EntityType; requires?: Permission[] };
 
 const groups: { label: MessageKey; items: NavItem[] }[] = [
   {
-    label: "portal.nav.groupWork",
+    label: "portal.nav.groupOverview",
     items: [
       { href: "/portal", label: "portal.nav.dashboard", icon: "grid" },
+      { href: "/portal/notifications", label: "portal.nav.notifications", icon: "bell" },
+    ],
+  },
+  {
+    label: "portal.nav.groupCoordination",
+    items: [
       { href: "/portal/partners", label: "portal.nav.partners", icon: "handshake", entity: "partner" },
       { href: "/portal/interventions", label: "portal.nav.interventions", icon: "clipboard", entity: "intervention" },
       { href: "/portal/field-reports", label: "portal.nav.fieldReports", icon: "smartphone", entity: "fieldReport" },
-      { href: "/portal/exceptions", label: "portal.nav.exceptions", icon: "layers", entity: "exception" },
-      { href: "/portal/cases", label: "portal.nav.cases", icon: "inbox", entity: "case" },
+      { href: "/portal/surveys", label: "portal.nav.surveys", icon: "target" },
     ],
   },
   {
     label: "portal.nav.groupOversight",
     items: [
-      { href: "/portal/analytics", label: "portal.nav.analytics", icon: "barChart" },
+      { href: "/portal/beneficiaries", label: "portal.nav.beneficiaries", icon: "users", entity: "review", requires: ["beneficiary.aggregate"] },
+      { href: "/portal/cases", label: "portal.nav.cases", icon: "inbox", entity: "case", requires: ["case.monitor"] },
+      { href: "/portal/documents", label: "portal.nav.documents", icon: "fileText", entity: "document" },
       { href: "/portal/gis", label: "portal.nav.gis", icon: "map" },
+    ],
+  },
+  {
+    label: "portal.nav.groupReporting",
+    items: [
       { href: "/portal/reports", label: "portal.nav.reports", icon: "fileCheck", entity: "report" },
-      { href: "/portal/integrations", label: "portal.nav.integrations", icon: "link", entity: "integration" },
-      { href: "/portal/audit", label: "portal.nav.audit", icon: "history" },
+      { href: "/portal/integrations", label: "portal.nav.integrations", icon: "link", entity: "integration", requires: ["integration.view"] },
+    ],
+  },
+  {
+    label: "portal.nav.groupSystem",
+    items: [
+      { href: "/portal/audit", label: "portal.nav.audit", icon: "history", requires: ["audit.view"] },
+      { href: "/portal/admin", label: "portal.nav.admin", icon: "settings", requires: ["admin.users", "admin.reference", "admin.security"] },
     ],
   },
 ];
@@ -52,6 +71,7 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
   const { t } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
+  const can = useCan();
   const [session, setSession] = useState<DemoSession | null>(null);
   const [checked, setChecked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
@@ -60,12 +80,19 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const navToggleRef = useRef<HTMLButtonElement>(null);
   const mainRef = useRef<HTMLElement>(null);
-  const { data: alerts } = useServiceQuery(getAlerts);
+  const { data: counts } = useServiceQuery(getAttentionCounts);
+  const { data: notifications } = useServiceQuery(listNotifications);
+  const unread = (notifications ?? []).filter((n) => !n.read).length;
 
   useEffect(() => {
     const current = getSession();
     if (!current) {
       router.replace("/sign-in");
+      return;
+    }
+    // Partner and field users work in their own workspaces and never open the OPM workspace.
+    if (homeFor(current) !== "/portal") {
+      router.replace(homeFor(current));
       return;
     }
     setSession(current);
@@ -109,7 +136,8 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
     );
   }
 
-  const countFor = (entity?: EntityType) => (entity ? (alerts ?? []).filter((a) => a.entity === entity).length : 0);
+  const scopeLabel =
+    session.scope.level === "national" ? t("portal.scope.national") : t("portal.scope.limited", { areas: session.scope.ids.join(", ") });
 
   function toggleCollapsed() {
     setCollapsed((value) => {
@@ -136,7 +164,7 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
           <p className={styles.identityLabel}>{t("portal.signedInLabel")}</p>
           <p className={styles.identityName}>{session.displayName}</p>
           <p className={styles.identityRole}>
-            {t("portal.roleName")} · {t("portal.scope")}
+            {t(`portal.roles.${session.role}` as MessageKey)} · {scopeLabel}
           </p>
         </>
       )}
@@ -151,7 +179,8 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
           <ul>
             {group.items.map((item) => {
               const active = isActive(pathname, item.href);
-              const count = countFor(item.entity);
+              const count = item.entity ? (counts?.[item.entity] ?? 0) : item.href === "/portal/notifications" ? unread : 0;
+              const locked = item.requires ? !item.requires.some((p) => can(p)) : false;
               const label = t(item.label);
               return (
                 <li key={item.href}>
@@ -161,12 +190,18 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
                     aria-current={active ? "page" : undefined}
                     title={compact ? label : undefined}
                   >
-                    <Icon name={item.icon} size={22} />
+                    <Icon name={item.icon} size={20} />
                     <span className={compact ? "visually-hidden" : styles.navText}>{label}</span>
-                    {count > 0 && (
+                    {locked && (
+                      <span className={styles.navLock} title={t("portal.denied.navHint")}>
+                        <Icon name="lock" size={14} />
+                        <span className="visually-hidden">{t("portal.denied.navHint")}</span>
+                      </span>
+                    )}
+                    {!locked && count > 0 && (
                       <span className={styles.count}>
                         {count}
-                        <span className="visually-hidden"> — {t("portal.dashboard.alertsCount", { count })}</span>
+                        <span className="visually-hidden"> — {t("portal.nav.needsAttention", { count })}</span>
                       </span>
                     )}
                   </Link>
@@ -250,18 +285,20 @@ export function PortalShell({ children, fontClassName }: { children: ReactNode; 
             <Logo href="/portal" shortName={t("common.shortName")} fullName={t("portal.portalName")} homeLabel={t("portal.nav.dashboard")} />
           </div>
           <div className={styles.topActions}>
+            <Link href="/portal/notifications" className={styles.bell} aria-label={t("portal.notifications.bellLabel", { count: unread })}>
+              <Icon name="bell" size={20} />
+              {unread > 0 && (
+                <span className={styles.bellCount} aria-hidden="true">
+                  {unread > 99 ? "99+" : unread}
+                </span>
+              )}
+            </Link>
             <LanguagePills />
-            <Button
-              variant="ghost"
-              size="sm"
-              icon="refresh"
-              aria-label={t("portal.resetDemo")}
-              onClick={() => dialogRef.current?.showModal()}
-            >
+            <Button variant="ghost" size="sm" icon="refresh" aria-label={t("portal.resetDemo")} onClick={() => dialogRef.current?.showModal()}>
               <span className={styles.hideSmall}>{t("portal.resetDemo")}</span>
             </Button>
             <Button variant="secondary" size="sm" icon="logOut" onClick={handleSignOut}>
-              {t("portal.signOut")}
+              <span className={styles.hideSmall}>{t("portal.signOut")}</span>
             </Button>
           </div>
         </header>

@@ -132,3 +132,24 @@
 [dir="rtl"] .bar {
   border-radius: 4px 0 0 4px;
 }
+
+.compact .svg {
+  max-height: 300px;
+}
+
+.compact .tableWrap {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.markerSelected {
+  stroke: var(--color-navy);
+  stroke-width: 0.8;
+}
+
+.region {
+  display: block;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
