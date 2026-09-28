@@ -7,14 +7,12 @@ import { useI18n } from "@/i18n/I18nProvider";
 import type { MessageKey } from "@/i18n/core";
 import type { DemoSession, PartnerPermission } from "@/lib/types";
 import { getSession, homeFor, signOut } from "@/lib/services/session";
-import { resetDemo } from "@/lib/services/dashboard";
 import { getPartnerNavCounts } from "@/lib/services/partnerInsights";
 import { useServiceQuery } from "@/lib/services/hooks";
 import { usePartnerCan, usePartnerIdentity } from "@/components/partner/partnerHooks";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { LanguagePills } from "@/components/ui/LanguagePills";
 import styles from "@/components/portal/PortalShell.module.css";
 
@@ -78,8 +76,6 @@ export function PartnerShell({ children, fontClassName }: { children: ReactNode;
   const [checked, setChecked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [announcement, setAnnouncement] = useState("");
-  const dialogRef = useRef<HTMLDialogElement>(null);
   const navToggleRef = useRef<HTMLButtonElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const { data: counts } = useServiceQuery(() => (getSession()?.partnerId ? getPartnerNavCounts() : Promise.resolve(null)), [checked]);
@@ -212,13 +208,6 @@ export function PartnerShell({ children, fontClassName }: { children: ReactNode;
     </nav>
   );
 
-  async function handleReset() {
-    dialogRef.current?.close();
-    await resetDemo();
-    setAnnouncement(t("portal.resetDone"));
-    router.push("/partner");
-  }
-
   async function handleSignOut() {
     await signOut();
     router.push("/sign-in");
@@ -288,39 +277,15 @@ export function PartnerShell({ children, fontClassName }: { children: ReactNode;
               )}
             </Link>
             <LanguagePills />
-            <Button variant="ghost" size="sm" icon="refresh" aria-label={t("portal.resetDemo")} onClick={() => dialogRef.current?.showModal()}>
-              <span className={styles.hideSmall}>{t("portal.resetDemo")}</span>
-            </Button>
             <Button variant="secondary" size="sm" icon="logOut" onClick={handleSignOut}>
               <span className={styles.hideSmall}>{t("portal.signOut")}</span>
             </Button>
           </div>
         </header>
-        <div className={styles.demoBanner} role="note">
-          <Badge tone="simulated">{t("common.simulated")}</Badge>
-          <span>{t("partner.demoBanner")}</span>
-        </div>
 
         <main id="partner-main" ref={mainRef} tabIndex={-1} className={styles.main}>
           {children}
         </main>
-      </div>
-
-      <dialog ref={dialogRef} className={styles.dialog} aria-labelledby="partner-reset-title">
-        <h2 id="partner-reset-title">{t("portal.resetDemo")}</h2>
-        <p>{t("portal.resetConfirm")}</p>
-        <div className={styles.dialogActions}>
-          <Button variant="secondary" onClick={() => dialogRef.current?.close()}>
-            {t("common.cancel")}
-          </Button>
-          <Button variant="danger" icon="refresh" onClick={handleReset}>
-            {t("common.confirm")}
-          </Button>
-        </div>
-      </dialog>
-
-      <div className="visually-hidden" aria-live="polite">
-        {announcement}
       </div>
     </div>
   );

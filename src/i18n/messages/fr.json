@@ -287,12 +287,8 @@
   },
   "portal": {
     "portalName": "Portail de supervision de l'OPM",
-    "demoBanner": "Session de démonstration avec des dossiers fictifs. Les vérifications externes, messages, signatures et échanges de données sont simulés. Les modifications sont enregistrées uniquement dans ce navigateur.",
     "signOut": "Se déconnecter",
     "signedInLabel": "Connecté en tant que",
-    "resetDemo": "Réinitialiser les données de démonstration",
-    "resetConfirm": "Rétablir tous les dossiers de démonstration à leur état initial ? Vos modifications dans ce navigateur seront perdues.",
-    "resetDone": "Les données de démonstration ont été réinitialisées.",
     "checkingSession": "Vérification de la session de démonstration…",
     "sidebarLabel": "Navigation du portail",
     "openNav": "Ouvrir la navigation du portail",
@@ -1888,8 +1884,6 @@
   "field": {
     "portalName": "Portail des opérations de terrain",
     "portalShort": "Opérations de terrain",
-    "demoBanner": "Démonstration avec des données fictives. Les vérifications ProGres v4 et les actions des autres personnes sont simulées.",
-    "resetConfirm": "Cette action rétablit les données de démonstration initiales et supprime tout ce qui est enregistré sur cet appareil pour ce compte, y compris les brouillons. Continuer ?",
     "nav": {
       "label": "Opérations de terrain",
       "tabsLabel": "Sections principales",

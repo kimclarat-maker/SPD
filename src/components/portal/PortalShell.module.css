@@ -316,17 +316,6 @@
   flex: none;
 }
 
-.demoBanner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 6px 24px;
-  background: var(--color-accent-soft);
-  font-size: 13px;
-  color: #1f4458;
-}
-
 .main {
   flex: 1;
   width: 100%;
@@ -408,8 +397,7 @@
   .main {
     padding: 28px 32px 80px;
   }
-  .topbar,
-  .demoBanner {
+  .topbar {
     padding-inline: 32px;
   }
 }

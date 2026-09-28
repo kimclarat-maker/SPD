@@ -274,12 +274,8 @@
   },
   "portal": {
     "portalName": "Tovuti ya Usimamizi ya OPM",
-    "demoBanner": "Kipindi cha maonyesho chenye kumbukumbu za kubuni. Ukaguzi wa nje, ujumbe, sahihi na ubadilishanaji wa data vinaigwa. Mabadiliko yanahifadhiwa kwenye kivinjari hiki pekee.",
     "signOut": "Toka",
     "signedInLabel": "Umeingia kama",
-    "resetDemo": "Weka upya data ya maonyesho",
-    "resetConfirm": "Rudisha kumbukumbu zote za maonyesho katika hali yake ya mwanzo? Mabadiliko yako katika kivinjari hiki yatapotea.",
-    "resetDone": "Data ya maonyesho imewekwa upya.",
     "checkingSession": "Inakagua kipindi cha maonyesho…",
     "sidebarLabel": "Urambazaji wa tovuti",
     "openNav": "Fungua urambazaji wa tovuti",
@@ -1875,8 +1871,6 @@
   "field": {
     "portalName": "Tovuti ya Shughuli za Uwandani",
     "portalShort": "Shughuli za uwandani",
-    "demoBanner": "Maonyesho yenye kumbukumbu za kubuni. Ukaguzi wa ProGres v4 na vitendo vya watu wengine vinaigwa.",
-    "resetConfirm": "Hii inarejesha data ya maonyesho ya mwanzo na kuondoa kila kitu kilichohifadhiwa kwenye kifaa hiki kwa akaunti hii, pamoja na rasimu. Uendelee?",
     "nav": {
       "label": "Shughuli za uwandani",
       "tabsLabel": "Sehemu kuu",
