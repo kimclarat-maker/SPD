@@ -16,14 +16,15 @@ import styles from "../auth.module.css";
 
 type Errors = { username?: string; password?: string };
 
-const portalLabelKey: Record<"opm" | "partner" | "field", MessageKey> = {
+const portalLabelKey: Record<"opm" | "partner" | "field" | "caseworker", MessageKey> = {
   opm: "auth.signIn.demoOpmPortal",
   partner: "auth.signIn.demoPartnerPortal",
   field: "auth.signIn.demoFieldPortal",
+  caseworker: "auth.signIn.demoCaseworkerPortal",
 };
 
 function groupDemoAccounts(accounts: DemoAccount[]) {
-  const groups: { portal: "opm" | "partner" | "field"; accounts: DemoAccount[] }[] = [];
+  const groups: { portal: "opm" | "partner" | "field" | "caseworker"; accounts: DemoAccount[] }[] = [];
   for (const account of accounts) {
     const portal = account.portal ?? "opm";
     const group = groups.find((g) => g.portal === portal);

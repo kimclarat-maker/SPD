@@ -675,6 +675,7 @@ export async function receiveIssue(p: IssuePayload): Promise<SyncResult> {
           dueAt: new Date(Date.now() + (p.priority === "high" ? 3 : 10) * DAY_MS).toISOString(),
           status: "received",
           escalated: false,
+          assignedTeam: route.team,
           channel: "Field officer referral (Field Operations Portal)",
           summary: p.description.trim(),
           nextAction: "Assign a team and contact the person through the help desk.",

@@ -93,7 +93,8 @@ export const allPermissions: Permission[] = [
  * personal details is never part of a role: it is granted per case, with a
  * recorded reason. Partner and field roles hold no OPM permission; their
  * access is set by partnerPermissions and fieldPermissions below. The
- * caseworker role belongs to a planned portal.
+ * caseworker role works the same case.monitor/case.assign actions as OPM,
+ * scoped to their own team's queue by the Caseworker Portal's service layer.
  */
 export const rolePermissions: Record<RoleId, Permission[]> = {
   opm_coordinator: allPermissions.filter((p) => p !== "admin.security"),
@@ -110,7 +111,7 @@ export const rolePermissions: Record<RoleId, Permission[]> = {
   partner_focal: [],
   field_officer: [],
   field_supervisor: [],
-  caseworker: ["case.monitor"],
+  caseworker: ["case.monitor", "case.assign"],
   // Partner Portal roles hold no OPM permission; their access is set by partnerPermissions below.
   partner_admin: [],
   partner_staff: [],
@@ -134,7 +135,10 @@ export const partnerDelegable: PartnerPermission[] = [
   "agreements.sign",
 ];
 
-export const plannedRoles: RoleId[] = ["partner_focal", "caseworker"];
+export const plannedRoles: RoleId[] = ["partner_focal"];
+
+/** Caseworker Portal roles. Their users see only their own team's case queue and claimed cases. */
+export const caseworkerRoles: RoleId[] = ["caseworker"];
 
 /** Field Operations Portal roles. Their users see only assigned settlements, interventions and tasks. */
 export const fieldRoles: RoleId[] = ["field_officer", "field_supervisor"];

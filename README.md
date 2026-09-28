@@ -1,10 +1,11 @@
-# RPCMS — public site, OPM Oversight Portal, Partner Portal and Field Operations Portal (frontend prototype)
+# RPCMS — public site, OPM Oversight Portal, Partner Portal, Field Operations Portal and Caseworker Portal (frontend prototype)
 
-This is the frontend prototype of the Refugee Partnership Coordination and Monitoring System (RPCMS), built with Next.js (App Router), React, and TypeScript. It has a public site and two authenticated workspaces:
+This is the frontend prototype of the Refugee Partnership Coordination and Monitoring System (RPCMS), built with Next.js (App Router), React, and TypeScript. It has a public site and four authenticated workspaces:
 
 - the **OPM Oversight Portal** (`/portal`), for staff of the Office of the Prime Minister, Department of Refugees;
 - the **Partner Portal** (`/partner`), for authorised staff of NGOs, humanitarian agencies and development partners. Each partner user sees only their own organisation's records;
-- the **Field Operations Portal** (`/field`), a mobile-first, installable, offline-capable workspace for authorised field officers and settlement supervisors.
+- the **Field Operations Portal** (`/field`), a mobile-first, installable, offline-capable workspace for authorised field officers and settlement supervisors;
+- the **Caseworker Portal** (`/caseworker`), for registration-desk staff working refugee services cases, scoped to their own team's referral queue and claimed cases.
 
 All workspaces read and write the same records, so a decision in one appears in the others.
 
@@ -31,6 +32,7 @@ The demonstration accounts work only when `NEXT_PUBLIC_RPCMS_DEMO=true` (set in 
 | `partner.suspended.demo` | `Demo-Suspended-2026` | Partner administrator, Upland Shelter Collective (suspended) | The suspension reason and next steps; new proposals blocked. |
 | `field.officer.demo` | `Demo-Field-2026` | Field officer, Mwangaza Health Services, Nakivale (authorised to deliver assistance) | The Field Operations Portal walkthrough: offline work, sync, a validation failure, a conflict, a correction. |
 | `field.supervisor.demo` | `Demo-Supervisor-2026` | Settlement supervisor, same organisation and settlement | Assigning and changing tasks, first-line review (return with a field comment, or endorse), team issues. |
+| `caseworker.demo` | `Demo-Caseworker-2026` | Caseworker, Nakivale registration desk | The Caseworker Portal: a team referral queue (fed by field-officer referrals), claiming a case, case-level access with a reason, messaging the requester, internal notes, resolving and closing. |
 
 Sign-in sends each account to its own workspace, and each workspace sends other accounts back to theirs (for example, a field account that opens `/portal` or `/partner` lands on `/field`).
 
@@ -39,7 +41,7 @@ Sign-in sends each account to its own workspace, and each workspace sends other 
 ```bash
 npm run typecheck
 npm run check:i18n       # translation coverage and unknown keys
-npx playwright test      # end-to-end scenarios (OPM, partner, field) + axe WCAG 2.2 AA scans
+npx playwright test      # end-to-end scenarios (OPM, partner, field, caseworker) + axe WCAG 2.2 AA scans
 ```
 
 Playwright uses the installed Microsoft Edge by default (`PW_CHANNEL=chrome` to use Chrome). It starts its own server on port 3100 from the last `npm run build`.
@@ -170,6 +172,23 @@ Record ids are in the query string so that one cached page serves every record o
 - **Security**: device data is not encrypted and sign-in is a demonstration. Production needs encrypted storage, device management, remote wipe and real authentication. Map tiles are not cached (the portal draws a plan from cached coordinates instead).
 - The service worker is registered only by `npm run build && npm start`; bump `VERSION` in `field-sw.js` with each deployment.
 
+## Caseworker Portal
+
+Sign in as `caseworker.demo`. This portal reuses the OPM workspace's refugee services case model and actions (`src/lib/services/cases.ts`) as-is — it only adds *scoping*: which cases a caseworker sees, and a way to claim one from their team's queue.
+
+1. **Team queue** (`/caseworker/queue`) lists open cases routed to the caseworker's team (`assignedTeam`) that nobody has claimed yet (`assignedTo` unset) — including a case referred live from the Field Operations Portal (sign in as `field.officer.demo`, raise a **referral** at `/field/issue?new=referral`; the officer sees only the referral's status, never the case).
+2. **Claim** a case from the queue. It moves to **My cases** (`/caseworker/cases`) and the case record shows who claimed it.
+3. Requester details start masked, the same as in the OPM workspace. **Request case-level access** with a reason to unmask them; the access and its reason are logged in the audit trail.
+4. Work the case with the same actions OPM has: start, request information (simulated SMS to the requester), message the requester, add internal notes (staff-only), escalate, resolve, close.
+
+| Route | Screen |
+| --- | --- |
+| `/caseworker` | Dashboard: counts (team queue, my cases, overdue), previews of both |
+| `/caseworker/queue` | Team queue: open, unclaimed cases routed to the caseworker's team, with a claim action |
+| `/caseworker/cases`, `/caseworker/cases/[id]` | Claimed cases; the detail screen is the OPM case record (`src/components/portal/views/CaseViews.tsx`) with a "Claim" action added and its back link pointed at this portal |
+
+**Access rules:** a caseworker's `case.assign`/`case.monitor` permissions are the same OPM ones (`rolePermissions.caseworker`, `src/lib/demo/reference.ts`); what differs is `listMyQueue()`/`listMyCases()` (`src/lib/services/cases.ts`) and `caseworkerTeam()` (`src/lib/services/caseworkerContext.ts`), which read the signed-in user's `caseworkerTeam` and scope the two lists to it. A caseworker cannot browse cases outside their team's queue or another team's claimed work.
+
 ## Functional versus simulated
 
 **Functional in the browser:** every workflow transition, validation rule, permission check, geographic scope filter, reason requirement, assignment, filter, sort, notification, the audit trail, report computation and snapshots, CSV and Excel (`.xlsx`) export, PDF via the browser's print dialog, and persistence across refreshes.
@@ -197,13 +216,16 @@ src/lib/services/field*.ts     Field Operations Portal: access rules, assigned-w
 src/lib/field/         Field device side: connectivity, device store (drafts, outbox, cache), IndexedDB files, sync engine, install prompt
 src/components/field/  Field Operations shell, shared parts, one view file per area
 public/field-sw.js, field.webmanifest, field-icons/   offline service worker and installable-app manifest
+src/app/caseworker/     Caseworker Portal routes
+src/components/caseworker/ Caseworker Portal shell and views (the case-detail screen is the OPM one, reused directly)
+src/lib/services/caseworkerContext.ts  Caseworker Portal access rules: team-queue and claimed-case scoping
 src/lib/services/partnerReview.ts  OPM decisions on partner submissions (change requests, progress, risks, expenditure, profile changes)
 src/lib/demo/          fictional seed data, reference data, role permissions, browser store
 src/lib/export.ts      CSV and .xlsx builders (no dependencies)
 src/i18n/              locale config, translator, message files (en, sw, fr, ar)
 ```
 
-To connect a real API, reimplement the functions in `src/lib/services/*` against it. The screens depend only on those function signatures and the types in `src/lib/types.ts`. Future partner, field operations, caseworker, refugee and M&E portals can call the same services; their roles already exist in the permission matrix (`src/lib/demo/reference.ts`).
+To connect a real API, reimplement the functions in `src/lib/services/*` against it. The screens depend only on those function signatures and the types in `src/lib/types.ts`. Partner, field operations and caseworker portals already reuse these services; a future refugee-facing portal is expected to as well, and its role scaffolding already exists in the permission matrix (`src/lib/demo/reference.ts`).
 
 ## GIS
 
@@ -220,5 +242,5 @@ Translations are **drafts that qualified translators must review before launch**
 - Replace the demonstration sign-in with the institution's identity provider and multi-factor authentication.
 - Build the backend and the real integrations with URSB, the NGO Bureau, UNHCR ProGres v4, AMP and NIMES, an approved e-signature service, and SMS/email delivery.
 - Replace the placeholder privacy notice and have all translations reviewed.
-- Build the caseworker and refugee portals, which are marked **Planned**, and the production backend for field sync (see *What still needs a production backend or external API*).
+- Build the refugee-facing portal (sign-in by case reference number and a personal detail, not a staff account) and the production backend for field sync (see *What still needs a production backend or external API*).
 - Replace simulated file uploads with real document storage and malware scanning, and the Partner Portal's demonstration controls with real OPM decisions only.

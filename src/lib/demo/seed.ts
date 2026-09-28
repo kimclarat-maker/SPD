@@ -28,7 +28,7 @@ import { baseSectors, baseServicePoints, baseSettlements, baseTeams, fieldAssist
  * indicator and map update → possible duplicate review → service case →
  * national report with AMP / NIMES exchange → audit timeline.
  */
-export const SEED_VERSION = 4;
+export const SEED_VERSION = 5;
 
 export const JOURNEY = {
   partnerId: "p-kcha",
@@ -74,6 +74,24 @@ export const FIELD_USERS = {
   officer: "u-field",
   officer2: "u-field2",
   supervisor: "u-fsup",
+} as const;
+
+/**
+ * Caseworker Portal demonstration: the caseworker at the Nakivale
+ * registration desk who receives field-officer referrals. The team string
+ * matches routeFor()'s "referral" routing in src/lib/services/fieldSync.ts,
+ * so a live referral from the field officer lands directly in this queue.
+ */
+export const CASEWORKER_USERS = {
+  registrar: "u-cw-nkv",
+} as const;
+
+export const CASEWORKER_JOURNEY = {
+  team: "Nakivale registration desk (caseworkers)",
+  /** Seeded, unclaimed — already in the team queue. */
+  queueCaseId: "sc-1195",
+  /** Seeded, already claimed — for a populated "My cases" view. */
+  claimedCaseId: "sc-1197",
 } as const;
 
 export const FIELD_JOURNEY = {
@@ -1657,6 +1675,44 @@ export function createSeed(now = new Date()): DemoState {
       documents: [{ id: "d1", name: "Refugee ID card (renewed)", status: "issued" }],
       updatedAt: at(-10),
     }),
+    // Caseworker Portal demonstration: a field-officer referral waiting in the team queue, and a case already claimed.
+    sc({
+      id: CASEWORKER_JOURNEY.queueCaseId,
+      ref: "SRV-2026-1195",
+      serviceType: "family_attestation",
+      settlementId: "nakivale",
+      priority: "medium",
+      receivedAt: at(0, -3),
+      dueAt: at(6),
+      status: "received",
+      assignedTeam: CASEWORKER_JOURNEY.team,
+      channel: "Field officer referral (Field Operations Portal)",
+      summary: "Field officer referred a family attestation request raised during a household visit.",
+      nextAction: "Claim from the team queue and contact the person through the help desk.",
+      requester: { name: "Not collected by the field officer", individualId: "Not collected", phone: "Not collected", household: "Not collected" },
+      referral: { fieldIssueId: "fi-0072", byUserId: FIELD_USERS.officer, by: "P. Achan (fictional)", at: at(0, -3) },
+      updatedAt: at(0, -3),
+    }),
+    sc({
+      id: CASEWORKER_JOURNEY.claimedCaseId,
+      ref: "SRV-2026-1197",
+      serviceType: "renewal",
+      settlementId: "nakivale",
+      priority: "medium",
+      receivedAt: at(-3),
+      dueAt: at(2),
+      status: "in_progress",
+      assignedTeam: CASEWORKER_JOURNEY.team,
+      assignedTo: "Demo Caseworker (fictional)",
+      channel: "Settlement help desk (recorded by staff)",
+      summary: "Refugee ID renewal; requester's photo appointment needs confirming.",
+      nextAction: "Confirm the photo appointment and issue the renewed ID.",
+      requester: { name: "Grace N. (fictional)", individualId: "SIM-PGV4-221-03102-01", phone: "+256 7•• ••• 512 (fictional)", household: "HH-NKV-3102-05 (fictional)" },
+      documents: [{ id: "d1", name: "Refugee ID card (renewal)", status: "pending" }],
+      messages: [{ id: "m1", at: at(-2), direction: "out", channel: "sms", text: "Please come to the registration desk on Thursday for your renewal photo." }],
+      internalNotes: [{ id: "n1", at: at(-1), author: "Demo Caseworker (fictional)", text: "Requester confirmed by phone; bringing the old ID card." }],
+      updatedAt: at(-1),
+    }),
   ];
 
   /* ----------------------------------------------------------- Documents */
@@ -1993,6 +2049,27 @@ export function createSeed(now = new Date()): DemoState {
       clientRecordId: "seed-issue-0071",
       updatedAt: at(-4),
     },
+    {
+      id: "fi-0072",
+      ref: "FI-2026-0072",
+      category: "referral",
+      priority: "medium",
+      settlementId: FIELD_JOURNEY.settlementId,
+      locationNote: "Reported during a household visit near the market.",
+      description: "Family needs a family attestation for a newborn; referred to the registration desk.",
+      evidence: [],
+      routedTo: CASEWORKER_JOURNEY.team,
+      status: "received",
+      restricted: true,
+      raisedByUserId: FIELD_USERS.officer,
+      raisedBy: "P. Achan (fictional)",
+      raisedAt: at(0, -3),
+      serviceType: "family_attestation",
+      caseId: CASEWORKER_JOURNEY.queueCaseId,
+      updates: [{ at: at(0, -3), by: "P. Achan (fictional)", text: "Raised from the field.", status: "received" }],
+      clientRecordId: "seed-issue-0072",
+      updatedAt: at(0, -3),
+    },
   ];
 
   /* --------------------------------------------------------------- State */
@@ -2121,6 +2198,18 @@ export function createSeed(now = new Date()): DemoState {
         interventionIds: [FIELD_JOURNEY.interventionId, FIELD_JOURNEY.secondInterventionId],
       },
       { id: "u-old", name: PREV, email: "duty.coordinator@example.org", role: "opm_coordinator", scope: { level: "national", ids: [] }, status: "deactivated", lastActiveAt: at(-30) },
+      // Caseworker Portal user. Works the Nakivale registration desk's referral queue.
+      {
+        id: CASEWORKER_USERS.registrar,
+        name: "Demo Caseworker (fictional)",
+        title: "Registration caseworker",
+        email: "caseworker.demo@example.org",
+        role: "caseworker",
+        scope: { level: "settlement", ids: [FIELD_JOURNEY.settlementId] },
+        status: "active",
+        lastActiveAt: at(-1),
+        caseworkerTeam: CASEWORKER_JOURNEY.team,
+      },
       // Partner Portal users. Each belongs to one organisation and holds no OPM permission.
       {
         id: PARTNER_USERS.admin,

@@ -1,9 +1,9 @@
 /**
  * Domain types shared by the portal UI and the service layer. These describe
  * the shapes a future API would return; the prototype fills them from
- * fictional seed data persisted in the browser. Future partner, field
- * operations, caseworker, refugee, and M&E portals are expected to reuse
- * these records and the workflows in src/lib/services.
+ * fictional seed data persisted in the browser. Partner, field operations
+ * and caseworker portals already reuse these records and the workflows in
+ * src/lib/services; a future refugee-facing portal is expected to as well.
  */
 
 export type ISODate = string;
@@ -166,6 +166,8 @@ export interface UserAccount {
   fieldOrganisationId?: string;
   /** Field Operations Portal permissions. */
   fieldPermissions?: FieldPermission[];
+  /** Caseworker Portal users: the team queue they work from (matches ServiceCase.assignedTeam). */
+  caseworkerTeam?: string;
 }
 
 /* ---------------------------------------------------------------- Partners */
@@ -743,6 +745,8 @@ export interface ServiceCase {
   status: CaseStatus;
   escalated: boolean;
   assignedTeam?: string;
+  /** The caseworker (display name) who claimed this case from the team queue. */
+  assignedTo?: string;
   channel: string;
   summary: string;
   nextAction: string;
@@ -1102,3 +1106,6 @@ export interface DemoSession {
 
 /** Field Operations Portal roles. */
 export const FIELD_ROLES: readonly RoleId[] = ["field_officer", "field_supervisor"];
+
+/** Caseworker Portal roles. */
+export const CASEWORKER_ROLES: readonly RoleId[] = ["caseworker"];

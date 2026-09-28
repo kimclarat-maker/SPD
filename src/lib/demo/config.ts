@@ -1,5 +1,5 @@
 import type { RoleId } from "@/lib/types";
-import { DEMO_USERS, FIELD_USERS, PARTNER_USERS } from "./seed";
+import { CASEWORKER_USERS, DEMO_USERS, FIELD_USERS, PARTNER_USERS } from "./seed";
 
 /**
  * Demonstration mode is opt-in through NEXT_PUBLIC_RPCMS_DEMO=true (see .env).
@@ -14,7 +14,7 @@ export interface DemoAccount {
   displayName: string;
   role: RoleId;
   /** Which workspace the account opens. Defaults to the OPM Oversight Portal. */
-  portal?: "opm" | "partner" | "field";
+  portal?: "opm" | "partner" | "field" | "caseworker";
 }
 
 /** Fictional accounts for the prototype walkthrough. Not real credentials. */
@@ -73,6 +73,14 @@ export const demoAccounts: DemoAccount[] = DEMO_ENABLED
         displayName: "S. Kato (fictional)",
         role: "field_supervisor",
         portal: "field",
+      },
+      {
+        userId: CASEWORKER_USERS.registrar,
+        username: "caseworker.demo",
+        password: "Demo-Caseworker-2026",
+        displayName: "Demo Caseworker (fictional)",
+        role: "caseworker",
+        portal: "caseworker",
       },
     ]
   : [];

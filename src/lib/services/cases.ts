@@ -4,6 +4,7 @@ import type { CaseStatus, DemoState, ServiceCase } from "@/lib/types";
 import { addAudit, addNotification, getState, mutate, newId } from "@/lib/demo/store";
 import { currentActor, delay, now, requireNote, requirePermission, requireScope, ServiceError } from "./core";
 import { getSession } from "./session";
+import { caseworkerTeam } from "./caseworkerContext";
 import { match, type RecordFilters } from "./filters";
 import { simulateMessage } from "./external";
 
@@ -86,6 +87,43 @@ export async function assignCase(id: string, team: string, note?: string): Promi
     c.nextAction = `${team}: start work on the request.`;
     c.updatedAt = now();
     log(draft, c, actor, reassign ? "caseReassigned" : "caseAssigned", "status", note?.trim() || undefined, { team });
+  });
+}
+
+/** Caseworker Portal: the signed-in caseworker's team's unclaimed, open cases. */
+export async function listMyQueue(): Promise<CaseRow[]> {
+  requirePermission("case.assign");
+  const team = caseworkerTeam();
+  const state = getState();
+  return state.cases
+    .filter((c) => team && c.assignedTeam === team && !c.assignedTo && OPEN_CASE.includes(c.status))
+    .map((c) => ({ ...masked(c), overdue: isOverdue(c) }))
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+/** Caseworker Portal: cases the signed-in caseworker has claimed. */
+export async function listMyCases(): Promise<CaseRow[]> {
+  const actor = requirePermission("case.assign");
+  const state = getState();
+  return state.cases
+    .filter((c) => c.assignedTo === actor)
+    .map((c) => ({ ...masked(c), overdue: isOverdue(c) }))
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+/** Caseworker Portal: claim a case from the team queue. Independent of (and doesn't replace) team assignment. */
+export async function claimCase(id: string): Promise<void> {
+  await delay();
+  const actor = requirePermission("case.assign");
+  mutate((draft) => {
+    const c = load(draft, id);
+    if (!OPEN_CASE.includes(c.status)) throw new ServiceError("INVALID_STATE");
+    if (c.assignedTo) throw new ServiceError("INVALID_STATE");
+    c.assignedTo = actor;
+    if (c.status === "received") c.status = "assigned";
+    c.nextAction = "Start work on the request.";
+    c.updatedAt = now();
+    log(draft, c, actor, "caseClaimed", "status");
   });
 }
 

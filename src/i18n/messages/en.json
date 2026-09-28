@@ -268,7 +268,7 @@
       "errorDemoDisabled": "Sign-in is not available in this build.",
       "mfaNote": "Multi-factor verification will be required when RPCMS launches. It is not active in this prototype.",
       "demoTitle": "Demonstration environment",
-      "demoBody": "This is a prototype sign-in, not production authentication. The fictional accounts open different workspaces: the OPM coordinator and M&E analyst use the OPM Oversight Portal; the partner administrator and partner staff use the Partner Portal for their own organisation only. The session is stored only in this browser.",
+      "demoBody": "This is a prototype sign-in, not production authentication. The fictional accounts open different workspaces: the OPM coordinator and M&E analyst use the OPM Oversight Portal; the partner administrator and partner staff use the Partner Portal for their own organisation only; the caseworker uses the Caseworker Portal, scoped to their own team's case queue. The session is stored only in this browser.",
       "demoUsername": "Username",
       "demoPassword": "Password",
       "demoFill": "Use this account",
@@ -276,7 +276,8 @@
       "demoOpmPortal": "OPM Oversight Portal",
       "demoPartnerPortal": "Partner Portal",
       "demoSuspended": "suspended organisation",
-      "demoFieldPortal": "Field Operations Portal"
+      "demoFieldPortal": "Field Operations Portal",
+      "demoCaseworkerPortal": "Caseworker Portal"
     },
     "forgot": {
       "title": "Reset your password",
@@ -1222,6 +1223,9 @@
       "accessGranted": "Case-level access granted and logged.",
       "assign": "Assign team",
       "reassign": "Reassign",
+      "claim": "Claim this case",
+      "claimedBy": "Claimed by {name}",
+      "caseworker": "Caseworker",
       "start": "Start work",
       "requestInfo": "Request information",
       "requestInfoHint": "The message is sent to the requester by SMS and the case waits for a reply.",
@@ -1687,7 +1691,7 @@
         "settlement": "Settlement"
       },
       "scopeAreas": "Areas",
-      "rolesIntro": "Operational roles and the permissions they carry. Partner, field and caseworker roles belong to planned portals.",
+      "rolesIntro": "Operational roles and the permissions they carry. Partner and field roles belong to their own portals.",
       "permission": "Permission",
       "caseAccessNote": "Access to a refugee's personal case details is never part of a role. It is granted per case, with a recorded reason.",
       "sectors": "Sectors",
@@ -1827,6 +1831,7 @@
       "caseReceived": "{name} received",
       "caseAssigned": "{name} assigned to {team}",
       "caseReassigned": "{name} reassigned to {team}",
+      "caseClaimed": "{name} claimed by the caseworker",
       "caseStarted": "{name}: work started",
       "caseInfoRequested": "{name}: information requested from the requester",
       "caseInfoReceived": "{name}: requester replied",
@@ -4077,6 +4082,33 @@
         "form": "Choose the form.",
         "allocation": "Enter a valid household reference, assistance type and quantity."
       }
+    }
+  },
+  "caseworker": {
+    "portalName": "Caseworker Portal",
+    "noTeam": "No team assigned",
+    "nav": {
+      "label": "Caseworker navigation",
+      "dashboard": "Dashboard",
+      "queue": "Team queue",
+      "myCases": "My cases"
+    },
+    "dashboard": {
+      "title": "My work",
+      "intro": "Cases referred to {team}.",
+      "queueCount": "In team queue",
+      "myCasesCount": "My cases",
+      "viewAll": "View all"
+    },
+    "queue": {
+      "title": "Team queue",
+      "intro": "Cases routed to your team, waiting to be claimed.",
+      "empty": "No cases waiting in the team queue."
+    },
+    "myCases": {
+      "title": "My cases",
+      "intro": "Cases you have claimed and are working.",
+      "empty": "You haven't claimed any cases yet."
     }
   }
 }

@@ -8,6 +8,7 @@ import type { CaseServiceType, CaseStatus } from "@/lib/types";
 import {
   addInternalNote,
   assignCase,
+  claimCase,
   closeCase,
   getCase,
   listCases,
@@ -21,6 +22,7 @@ import {
   startCase,
   type CaseRow,
 } from "@/lib/services/cases";
+import { caseworkerTeam } from "@/lib/services/caseworkerContext";
 import type { RecordFilters } from "@/lib/services/filters";
 import { settlementName } from "@/lib/services/lookup";
 import { useCan, useErrorMessage, useServiceAction, useServiceQuery } from "@/lib/services/hooks";
@@ -140,13 +142,14 @@ function caseStages(status: CaseStatus, t: (k: MessageKey) => string): { key: st
   });
 }
 
-export function CaseDetailView({ id }: { id: string }) {
+export function CaseDetailView({ id, backHref = "/portal/cases" }: { id: string; backHref?: string }) {
   const { t, formatDate } = useI18n();
   const fieldId = useId();
   const can = useCan();
   const toMessage = useErrorMessage();
   const { data, notFound, forbidden, error } = useServiceQuery(() => getCase(id), [id]);
   const msg = useServiceAction();
+  const myTeam = caseworkerTeam();
   const [team, setTeam] = useState("");
   const [teamError, setTeamError] = useState<string>();
   const [message, setMessage] = useState("");
@@ -155,7 +158,7 @@ export function CaseDetailView({ id }: { id: string }) {
   const [apptError, setApptError] = useState<string>();
 
   if (forbidden) return <PermissionDenied />;
-  if (notFound) return <RecordNotFound backHref="/portal/cases" />;
+  if (notFound) return <RecordNotFound backHref={backHref} />;
   if (error) return <ErrorState message={toMessage(error)} />;
   if (!data) return <LoadingState label={t("common.loading")} />;
 
@@ -163,8 +166,12 @@ export function CaseDetailView({ id }: { id: string }) {
   const canAssign = can("case.assign");
   const openCase = ["received", "assigned", "in_progress", "awaiting_info"].includes(c.status);
   const chosenTeam = team || c.assignedTeam || "";
+  const canClaim = openCase && !c.assignedTo && Boolean(myTeam) && c.assignedTeam === myTeam;
 
   const actions: RecordAction[] = [];
+  if (canClaim) {
+    actions.push({ key: "claim", label: t("portal.cases.claim"), tone: "primary", icon: "user", noNote: true, denied: !canAssign, run: () => claimCase(c.id) });
+  }
   if (!hasAccess) {
     actions.push({
       key: "access",
@@ -231,7 +238,7 @@ export function CaseDetailView({ id }: { id: string }) {
 
   return (
     <RecordPage
-      back={{ href: "/portal/cases", label: t("portal.cases.back") }}
+      back={{ href: backHref, label: t("portal.cases.back") }}
       eyebrow={`${t("portal.entity.case")} · ${t(`portal.cases.types.${c.serviceType}` as MessageKey)}`}
       title={c.ref}
       mono
@@ -251,7 +258,15 @@ export function CaseDetailView({ id }: { id: string }) {
           )}
         </>
       }
-      meta={[settlementName(c.settlementId), c.assignedTeam ?? t("portal.common.unassigned"), `${t("portal.cases.received")} ${formatDate(c.receivedAt)}`, `${t("portal.cases.due")} ${formatDate(c.dueAt)}`].join(" · ")}
+      meta={[
+        settlementName(c.settlementId),
+        c.assignedTeam ?? t("portal.common.unassigned"),
+        c.assignedTo && t("portal.cases.claimedBy", { name: c.assignedTo }),
+        `${t("portal.cases.received")} ${formatDate(c.receivedAt)}`,
+        `${t("portal.cases.due")} ${formatDate(c.dueAt)}`,
+      ]
+        .filter(Boolean)
+        .join(" · ")}
       stages={caseStages(c.status, t)}
       notices={
         <>
@@ -277,6 +292,7 @@ export function CaseDetailView({ id }: { id: string }) {
                     { label: t("portal.cases.channel"), value: c.channel },
                     { label: t("portal.filters.settlement"), value: settlementName(c.settlementId) },
                     { label: t("portal.cases.team"), value: c.assignedTeam ?? t("portal.common.unassigned") },
+                    { label: t("portal.cases.caseworker"), value: c.assignedTo ?? t("portal.common.unassigned") },
                     { label: t("portal.cases.received"), value: formatDate(c.receivedAt, true) },
                     { label: t("portal.cases.due"), value: formatDate(c.dueAt, true) },
                   ]}

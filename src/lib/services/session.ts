@@ -1,6 +1,6 @@
 "use client";
 
-import { FIELD_ROLES, type DemoSession } from "@/lib/types";
+import { CASEWORKER_ROLES, FIELD_ROLES, type DemoSession } from "@/lib/types";
 import { DEMO_ENABLED, demoAccounts } from "@/lib/demo/config";
 import { addAudit, getState, mutate } from "@/lib/demo/store";
 
@@ -60,11 +60,12 @@ export async function signIn(username: string, password: string): Promise<SignIn
 
 /**
  * Where a signed-in user works. Each workspace is closed to the others:
- * partner users never open the OPM workspace, field users never open the
- * OPM or Partner Portal, and OPM users never open either of those.
+ * partner users never open the OPM workspace, field and caseworker users
+ * never open the OPM or Partner Portal, and OPM users never open either.
  */
-export function homeFor(session: Pick<DemoSession, "partnerId" | "role"> | null): "/portal" | "/partner" | "/field" {
+export function homeFor(session: Pick<DemoSession, "partnerId" | "role"> | null): "/portal" | "/partner" | "/field" | "/caseworker" {
   if (session && FIELD_ROLES.includes(session.role)) return "/field";
+  if (session && CASEWORKER_ROLES.includes(session.role)) return "/caseworker";
   return session?.partnerId ? "/partner" : "/portal";
 }
 
