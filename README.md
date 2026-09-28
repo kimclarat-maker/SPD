@@ -58,7 +58,7 @@ The overview's **Demonstration walkthrough** panel tracks one connected fictiona
 8. **National report** NR-…-Q3: generate (figures freeze), export, then prepare and submit to AMP (accepted) and NIMES (partly accepted, then accepted on resubmission).
 9. **Audit trail**: every step above is in the read-only history.
 
-Changes persist in `localStorage` and survive a refresh. **Reset demonstration data** in the top bar restores the starting state.
+Changes persist in `localStorage` and survive a refresh.
 
 ## Portal routes
 

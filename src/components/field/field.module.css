@@ -184,23 +184,6 @@
   font-weight: 700;
 }
 
-.demoBar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  background: var(--color-accent-soft);
-  font-size: 14px;
-  color: var(--color-text);
-}
-
-/* Teal on the pale demo bar is below 4.5:1; use navy text there. */
-.demoBar [data-button="ghost"],
-.demoBar [data-button="ghost"]:hover:not(:disabled) {
-  color: var(--color-navy);
-}
-
 /* ------------------------------------------------------------ Layout */
 
 .body {

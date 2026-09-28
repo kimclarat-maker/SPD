@@ -178,11 +178,36 @@
   gap: 12px;
 }
 
+.demoGroup {
+  display: grid;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-accent);
+}
+
+.demoGroup:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.demoGroupTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
 .demoAccount {
   display: grid;
   gap: 6px;
   padding-top: 12px;
   border-top: 1px solid var(--color-border);
+}
+
+.demoAccount:first-of-type {
+  padding-top: 0;
+  border-top: none;
 }
 
 .demoRole {

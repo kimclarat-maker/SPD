@@ -7,15 +7,11 @@ import { useI18n } from "@/i18n/I18nProvider";
 import type { MessageKey } from "@/i18n/core";
 import type { FieldPermission } from "@/lib/types";
 import { getSession, homeFor, signOut } from "@/lib/services/session";
-import { resetDemo } from "@/lib/services/dashboard";
 import { isFieldRole } from "@/lib/services/fieldContext";
 import { useConnectivity } from "@/lib/field/connectivity";
-import { clearDevice } from "@/lib/field/device";
-import { clearFiles } from "@/lib/field/files";
 import { syncNow } from "@/lib/field/client";
 import "@/lib/field/install";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { FieldDataProvider, useDevice, useFieldData, useSyncRunning } from "./FieldData";
 import styles from "./field.module.css";
@@ -124,7 +120,6 @@ function Shell({ children }: { children: ReactNode }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const moreRef = useRef<HTMLButtonElement>(null);
-  const resetRef = useRef<HTMLDialogElement>(null);
   const [announcement, setAnnouncement] = useState("");
   const wasOnline = useRef(online);
   useServiceWorker(locale);
@@ -161,16 +156,6 @@ function Shell({ children }: { children: ReactNode }) {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [moreOpen]);
-
-  async function handleReset() {
-    resetRef.current?.close();
-    await resetDemo();
-    clearDevice();
-    await clearFiles("dev-");
-    await clearFiles("field-");
-    setAnnouncement(t("portal.resetDone"));
-    router.push("/field");
-  }
 
   const navLinks = (counts: { sync: number; syncAlert: boolean; notifications: number; returned: number }, onPick?: () => void) =>
     NAV.map((group) => (
@@ -238,13 +223,6 @@ function Shell({ children }: { children: ReactNode }) {
                 </p>
               </div>
             )}
-            <div className={styles.demoBar} role="note">
-              <Badge tone="simulated">{t("common.simulated")}</Badge>
-              <span>{t("field.demoBanner")}</span>
-              <Button size="sm" variant="ghost" icon="refresh" onClick={() => resetRef.current?.showModal()}>
-                {t("portal.resetDemo")}
-              </Button>
-            </div>
           </div>
 
           <div className={styles.body}>
@@ -292,20 +270,6 @@ function Shell({ children }: { children: ReactNode }) {
             </>
           )}
 
-          <dialog ref={resetRef} className={styles.dialog} aria-labelledby="field-reset-title">
-            <div className={styles.dialogBody}>
-              <h2 id="field-reset-title">{t("portal.resetDemo")}</h2>
-              <p>{t("field.resetConfirm")}</p>
-              <div className={styles.actions}>
-                <Button variant="secondary" onClick={() => resetRef.current?.close()}>
-                  {t("common.cancel")}
-                </Button>
-                <Button variant="danger" icon="refresh" onClick={handleReset}>
-                  {t("common.confirm")}
-                </Button>
-              </div>
-            </div>
-          </dialog>
           <div className="visually-hidden" aria-live="polite">
             {announcement}
           </div>

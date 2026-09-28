@@ -303,12 +303,8 @@
   },
   "portal": {
     "portalName": "OPM Oversight Portal",
-    "demoBanner": "Demonstration session with fictional records. External checks, messages, signatures and data exchanges are simulated. Changes are saved only in this browser.",
     "signOut": "Sign out",
     "signedInLabel": "Signed in as",
-    "resetDemo": "Reset demonstration data",
-    "resetConfirm": "Reset all demonstration records to their starting state? Your changes in this browser will be lost.",
-    "resetDone": "Demonstration data has been reset.",
     "checkingSession": "Checking demonstration session…",
     "sidebarLabel": "Portal navigation",
     "openNav": "Open portal navigation",
@@ -1977,7 +1973,6 @@
   },
   "partner": {
     "portalName": "Partner Portal",
-    "demoBanner": "Prototype with fictional records. Registry checks, ProGres v4, AMP, e-signatures and file storage are simulated and labelled.",
     "nav": {
       "label": "Partner Portal",
       "groupOverview": "Overview",
@@ -3035,8 +3030,6 @@
   "field": {
     "portalName": "Field Operations Portal",
     "portalShort": "Field operations",
-    "demoBanner": "Demonstration with fictional records. ProGres v4 checks and other people's actions are simulated.",
-    "resetConfirm": "This restores the starting demonstration data and removes everything saved on this device for this account, including drafts. Continue?",
     "nav": {
       "label": "Field operations",
       "tabsLabel": "Main sections",

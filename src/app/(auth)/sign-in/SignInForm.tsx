@@ -9,12 +9,29 @@ import { Button } from "@/components/ui/Button";
 import { Notice } from "@/components/ui/Notice";
 import { Icon } from "@/components/ui/Icon";
 import { Badge } from "@/components/ui/Badge";
-import { getSession, homeFor, signIn } from "@/lib/services/session";
-import { DEMO_ENABLED, demoAccounts } from "@/lib/demo/config";
+import { homeFor, signIn } from "@/lib/services/session";
+import { DEMO_ENABLED, demoAccounts, type DemoAccount } from "@/lib/demo/config";
 import type { MessageKey } from "@/i18n/core";
 import styles from "../auth.module.css";
 
 type Errors = { username?: string; password?: string };
+
+const portalLabelKey: Record<"opm" | "partner" | "field", MessageKey> = {
+  opm: "auth.signIn.demoOpmPortal",
+  partner: "auth.signIn.demoPartnerPortal",
+  field: "auth.signIn.demoFieldPortal",
+};
+
+function groupDemoAccounts(accounts: DemoAccount[]) {
+  const groups: { portal: "opm" | "partner" | "field"; accounts: DemoAccount[] }[] = [];
+  for (const account of accounts) {
+    const portal = account.portal ?? "opm";
+    const group = groups.find((g) => g.portal === portal);
+    if (group) group.accounts.push(account);
+    else groups.push({ portal, accounts: [account] });
+  }
+  return groups;
+}
 
 export function SignInForm() {
   const { t } = useI18n();
@@ -27,28 +44,14 @@ export function SignInForm() {
   const [submitting, setSubmitting] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
 
-  // Already in a demonstration session: go straight to the portal.
-  useEffect(() => {
-    const current = getSession();
-    if (current) router.replace(homeFor(current));
-  }, [router]);
-
   const hasErrors = Boolean(errors.username || errors.password || formError);
   useEffect(() => {
     if (hasErrors) summaryRef.current?.focus();
   }, [hasErrors, errors, formError]);
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    const nextErrors: Errors = {};
-    if (!username.trim()) nextErrors.username = t("auth.signIn.errorUsernameRequired");
-    if (!password) nextErrors.password = t("auth.signIn.errorPasswordRequired");
-    setErrors(nextErrors);
-    setFormError(null);
-    if (nextErrors.username || nextErrors.password) return;
-
+  async function attemptSignIn(nextUsername: string, nextPassword: string) {
     setSubmitting(true);
-    const result = await signIn(username, password);
+    const result = await signIn(nextUsername, nextPassword);
     if (result.ok) {
       router.push(homeFor(result.session));
       return;
@@ -62,6 +65,26 @@ export function SignInForm() {
           ? t("auth.signIn.errorDeactivated")
           : t("auth.signIn.errorInvalid"),
     );
+  }
+
+  async function onSubmit(event: FormEvent) {
+    event.preventDefault();
+    const nextErrors: Errors = {};
+    if (!username.trim()) nextErrors.username = t("auth.signIn.errorUsernameRequired");
+    if (!password) nextErrors.password = t("auth.signIn.errorPasswordRequired");
+    setErrors(nextErrors);
+    setFormError(null);
+    if (nextErrors.username || nextErrors.password) return;
+    await attemptSignIn(username, password);
+  }
+
+  async function useDemoAccount(account: { username: string; password: string }) {
+    if (submitting) return;
+    setUsername(account.username);
+    setPassword(account.password);
+    setErrors({});
+    setFormError(null);
+    await attemptSignIn(account.username, account.password);
   }
 
   return (
@@ -157,33 +180,34 @@ export function SignInForm() {
             </h2>
           </div>
           <p>{t("auth.signIn.demoBody")}</p>
-          {demoAccounts.map((account) => (
-            <div key={account.username} className={styles.demoAccount}>
-              <p className={styles.demoRole}>
-                {t(account.portal === "partner" ? "auth.signIn.demoPartnerPortal" : account.portal === "field" ? "auth.signIn.demoFieldPortal" : "auth.signIn.demoOpmPortal")} · {t(`portal.roles.${account.role}` as MessageKey)}
-                {account.username === "partner.suspended.demo" && ` · ${t("auth.signIn.demoSuspended")}`}
-              </p>
-              <dl className={styles.demoList}>
-                <dt>{t("auth.signIn.demoUsername")}</dt>
-                <dd>{account.username}</dd>
-                <dt>{t("auth.signIn.demoPassword")}</dt>
-                <dd>{account.password}</dd>
-              </dl>
-              <div>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  aria-label={`${t("auth.signIn.demoFill")}: ${t(`portal.roles.${account.role}` as MessageKey)}`}
-                  onClick={() => {
-                    setUsername(account.username);
-                    setPassword(account.password);
-                    setErrors({});
-                    setFormError(null);
-                  }}
-                >
-                  {t("auth.signIn.demoFill")}
-                </Button>
-              </div>
+          {groupDemoAccounts(demoAccounts).map((group) => (
+            <div key={group.portal} className={styles.demoGroup}>
+              <h3 className={styles.demoGroupTitle}>{t(portalLabelKey[group.portal])}</h3>
+              {group.accounts.map((account) => (
+                <div key={account.username} className={styles.demoAccount}>
+                  <p className={styles.demoRole}>
+                    {t(`portal.roles.${account.role}` as MessageKey)}
+                    {account.username === "partner.suspended.demo" && ` · ${t("auth.signIn.demoSuspended")}`}
+                  </p>
+                  <dl className={styles.demoList}>
+                    <dt>{t("auth.signIn.demoUsername")}</dt>
+                    <dd>{account.username}</dd>
+                    <dt>{t("auth.signIn.demoPassword")}</dt>
+                    <dd>{account.password}</dd>
+                  </dl>
+                  <div>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      disabled={submitting}
+                      aria-label={`${t("auth.signIn.demoFill")}: ${t(portalLabelKey[group.portal])} · ${t(`portal.roles.${account.role}` as MessageKey)}`}
+                      onClick={() => void useDemoAccount(account)}
+                    >
+                      {t("auth.signIn.demoFill")}
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </section>
