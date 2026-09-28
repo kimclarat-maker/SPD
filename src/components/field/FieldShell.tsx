@@ -157,7 +157,7 @@ function Shell({ children }: { children: ReactNode }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [moreOpen]);
 
-  const navLinks =(counts: { sync: number; syncAlert: boolean; notifications: number; returned: number }, onPick?: () => void) =>
+  const navLinks = (counts: { sync: number; syncAlert: boolean; notifications: number; returned: number }, onPick?: () => void) =>
     NAV.map((group) => (
       <div key={group.group}>
         <p className={styles.navGroup}>{t(group.group)}</p>
